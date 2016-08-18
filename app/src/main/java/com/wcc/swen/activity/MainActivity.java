@@ -1,8 +1,8 @@
 package com.wcc.swen.activity;
 
-import android.app.FragmentManager;
 import android.graphics.Color;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +30,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ListView lv_drawer;
     private String[] items = {"新闻","视频","天气"};
     private ArrayAdapter mAdapter;
+    private MainPresenter mPresenter;
+    private int currentFragmentId = 0;
+    // 用于关闭Drawer
+    private LinearLayout ll_drawer;
+    private FragmentManager fragmentManager;
+    private long firstPressTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +46,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initView();
     }
 
-    private MainPresenter mPresenter;
-    private int currentFragmentId = 0;
-    // 用于关闭Drawer
-    private LinearLayout ll_drawer;
-    private FragmentManager fragmentManager;
     private void initView()
     {
         mPresenter = new MainPresenter(this);
 
         // 主页面默认添加NewsFragment
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.ll_content, new NewsFragment()).commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -111,9 +112,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         fragmentTransaction.commit();
     }
 
-    private long firstPressTime = 0;
     @Override
     public void onBackPressed() {
+
+        if (mDrawerLayout.isDrawerOpen(ll_drawer)) {
+            mDrawerLayout.closeDrawer(ll_drawer);
+            return;
+        }
+
         long now = System.currentTimeMillis();
         if((now - firstPressTime) > 2000)
         {
