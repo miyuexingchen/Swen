@@ -11,21 +11,25 @@ import android.view.ViewGroup;
 
 import com.wcc.swen.R;
 import com.wcc.swen.adapter.NewsDetailAdapter;
+import com.wcc.swen.utils.LogUtils;
 
 /**
  * Created by Administrator on 2016/8/17.
  */
 public class NewsFragment extends Fragment {
 
+    final String tag = "NewsFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        LogUtils.e(tag, "NewsFragment.onCreateView");
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         TabLayout tab = (TabLayout) view.findViewById(R.id.tab);
         ViewPager vp = (ViewPager) view.findViewById(R.id.vp_news_main);
-        vp.setAdapter(new NewsDetailAdapter(getFragmentManager(), getActivity()));
+        vp.setAdapter(new NewsDetailAdapter(getChildFragmentManager(), getActivity()));
         vp.setOffscreenPageLimit(1);
         tab.setupWithViewPager(vp);
         tab.setTabMode(TabLayout.MODE_FIXED);

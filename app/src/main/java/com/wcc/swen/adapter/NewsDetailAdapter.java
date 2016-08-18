@@ -12,8 +12,8 @@ import com.wcc.swen.view.NewsDetailFragment;
  */
 public class NewsDetailAdapter extends FragmentPagerAdapter {
 
-    final int page_count = 3;
-    private String[] tabs = {"头条", "体育", "电影"};
+    final int page_count = 4;
+    private String[] tabs = {"头条", "体育", "电影", "生活"};
     private Context mContext;
 
     public NewsDetailAdapter(FragmentManager fm, Context context) {
