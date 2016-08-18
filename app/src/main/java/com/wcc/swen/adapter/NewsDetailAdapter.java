@@ -9,6 +9,7 @@ import com.wcc.swen.view.NewsDetailFragment;
 
 /**
  * Created by WangChenchen on 2016/8/18.
+ * 新闻页ViewPager适配器
  */
 public class NewsDetailAdapter extends FragmentPagerAdapter {
 

@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jude.rollviewpager.OnItemClickListener;
+import com.jude.rollviewpager.RollPagerView;
 import com.wcc.swen.R;
+import com.wcc.swen.adapter.LoopAdapter;
 import com.wcc.swen.utils.LogUtils;
 
 /**
@@ -43,10 +47,22 @@ public class NewsDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         LogUtils.d(tag, "onCreateView " + mHint);
-        View v = inflater.inflate(R.layout.fragment_news_detail, container, false);
-        TextView tv = (TextView) v.findViewById(R.id.tv_news_detail);
+        View view = inflater.inflate(R.layout.fragment_news_detail, container, false);
+        TextView tv = (TextView) view.findViewById(R.id.tv_news_detail);
         tv.setText(mHint);
 
-        return v;
+        if ("头条".equals(mHint)) {
+            // 实现轮播效果
+            RollPagerView rpv = (RollPagerView) view.findViewById(R.id.rpv_news_detail);
+            rpv.setVisibility(View.VISIBLE);
+            rpv.setAdapter(new LoopAdapter(rpv));
+            rpv.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Toast.makeText(getActivity(), position + " is clicked.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        return view;
     }
 }

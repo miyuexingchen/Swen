@@ -8,8 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.jude.rollviewpager.OnItemClickListener;
+import com.jude.rollviewpager.RollPagerView;
 import com.wcc.swen.R;
+import com.wcc.swen.adapter.LoopAdapter;
 import com.wcc.swen.adapter.NewsDetailAdapter;
 import com.wcc.swen.utils.LogUtils;
 
@@ -27,12 +31,14 @@ public class NewsFragment extends Fragment {
         LogUtils.e(tag, "NewsFragment.onCreateView");
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
+        // 实现tab效果
         TabLayout tab = (TabLayout) view.findViewById(R.id.tab);
         ViewPager vp = (ViewPager) view.findViewById(R.id.vp_news_main);
         vp.setAdapter(new NewsDetailAdapter(getChildFragmentManager(), getActivity()));
         vp.setOffscreenPageLimit(1);
         tab.setupWithViewPager(vp);
         tab.setTabMode(TabLayout.MODE_FIXED);
+
         return view;
     }
 }
