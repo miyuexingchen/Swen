@@ -7,14 +7,15 @@
     <ImageView
         android:id="@+id/iv_rpv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_rpv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:paddingBottom="10dp"
+        android:layout_marginTop="140dp"
+        android:paddingBottom="5dp"
         android:paddingLeft="30dp"
         android:text="奥田爱华"
         android:textColor="@android:color/white"
