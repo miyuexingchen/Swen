@@ -1,8 +1,11 @@
 package com.wcc.swen.adapter;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
@@ -21,6 +24,13 @@ public class LoopAdapter extends LoopPagerAdapter {
             R.mipmap.i4
     };
 
+    private String strs[] = {
+            "东",
+            "西",
+            "南",
+            "北"
+    };
+
     public LoopAdapter(RollPagerView viewPager) {
         super(viewPager);
     }
@@ -28,11 +38,14 @@ public class LoopAdapter extends LoopPagerAdapter {
     @Override
     public View getView(ViewGroup container, int position) {
 
-        ImageView imageView = new ImageView(container.getContext());
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_rollpagerveiw, container, false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_rpv);
         imageView.setImageResource(imgs[position]);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        return imageView;
+
+        TextView tv_rpv = (TextView) view.findViewById(R.id.tv_rpv);
+        tv_rpv.setText(strs[position]);
+        return view;
     }
 
     @Override

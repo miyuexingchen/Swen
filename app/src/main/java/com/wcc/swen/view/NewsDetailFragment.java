@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jude.rollviewpager.OnItemClickListener;
@@ -28,8 +29,10 @@ import java.util.List;
 public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener {
 
     private final String tag = "NewsDetailFragment";
-    NewsDetailAdapter adapter;
-    RollPagerView rollPagerView;
+    private NewsDetailAdapter adapter;
+    private RollPagerView rollPagerView;
+    private TextView tv_rpv;
+
     private String mHint;
     private RecyclerView rv_news_detail;
     private String[] list = {"纸杯蛋糕（Cupcake）",
@@ -86,6 +89,8 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                     Toast.makeText(getActivity(), position + " is clicked.", Toast.LENGTH_SHORT).show();
                 }
             });
+
+
         }
         adapter.setOnItemClickListener(this);
         rv_news_detail.setAdapter(adapter);
