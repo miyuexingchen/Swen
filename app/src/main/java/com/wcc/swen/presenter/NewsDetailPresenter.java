@@ -4,8 +4,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.NewsModel;
+import com.wcc.swen.utils.OkHttpUtils;
 
 import java.util.List;
 
@@ -40,12 +42,16 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadData(String url, final List<NewsModel> list) {
+    public void loadData(final String url, final List<NewsModel> list) {
         new Thread() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+//                    Thread.sleep(2000);
+                    String str = OkHttpUtils.getResponse(url);
+                    Gson gson = new Gson();
+
+                    // TODO
                     if (list.size() > 0)
                         mHandler.sendEmptyMessage(0);
                     else

@@ -23,6 +23,7 @@ import com.wcc.swen.adapter.NewsDetailAdapter;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
+import com.wcc.swen.utils.Url;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,9 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     private NewsDetailPresenter mPresenter;
     private List<NewsModel> nmList = new ArrayList<NewsModel>();
     private View view;
+    // 请求数据起始标识
+    private int page = 0;
+    String url = Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
 
     public static NewsDetailFragment newInstance(String hint) {
         Bundle data = new Bundle();
@@ -70,14 +74,15 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_news_detail, container, false);
-
         pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
         btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
+
+        // 创建presenter
         mPresenter = new NewsDetailPresenter(this);
+
         // TODO
-        mPresenter.loadData("", nmList);
+        mPresenter.loadData(url, nmList);
 
         return view;
     }
@@ -94,7 +99,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                 btn_hint_retry.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
                 // TODO
-                mPresenter.loadData("", nmList);
+                mPresenter.loadData(url, nmList);
             }
         });
     }
