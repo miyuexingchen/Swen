@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,15 +20,17 @@ import com.jude.rollviewpager.RollPagerView;
 import com.wcc.swen.R;
 import com.wcc.swen.adapter.LoopAdapter;
 import com.wcc.swen.adapter.NewsDetailAdapter;
-import com.wcc.swen.utils.LogUtils;
+import com.wcc.swen.contract.NewsDetailContract;
+import com.wcc.swen.model.NewsModel;
+import com.wcc.swen.presenter.NewsDetailPresenter;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by WangChenchen on 2016/8/18.
  */
-public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener {
+public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener, NewsDetailContract.View {
 
     private final String tag = "NewsDetailFragment";
     private NewsDetailAdapter adapter;
@@ -35,17 +39,12 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     private String mHint;
     private RecyclerView rv_news_detail;
-    private String[] list = {"纸杯蛋糕（Cupcake）",
-            "甜甜圈（Donut）",
-            "闪电泡芙（Éclair）",
-            "冻酸奶（Froyo）",
-            "姜饼（Gingerbread）",
-            "蜂巢（Honeycomb）",
-            "冰淇淋三明治（Ice Cream Sandwich）",
-            "果冻豆（Jelly Bean）",
-            "奇巧（KitKat）",
-            "棒棒糖（Lollipop）",
-            "棉花糖（Marshmallow）。"};
+    private Button btn_hint_retry;
+    private ProgressBar pb;
+
+    private NewsDetailPresenter mPresenter;
+    private List<NewsModel> nmList = new ArrayList<NewsModel>();
+    private View view;
 
     public static NewsDetailFragment newInstance(String hint) {
         Bundle data = new Bundle();
@@ -61,22 +60,58 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         super.onCreate(savedInstanceState);
         mHint = getArguments().getString("hint");
 
-        LogUtils.d(tag, "onCreate " + mHint);
+    }
+
+    @Override
+    public View getView() {
+        return view;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        LogUtils.d(tag, "onCreateView " + mHint);
-        View view = inflater.inflate(R.layout.fragment_news_detail, container, false);
+        view = inflater.inflate(R.layout.fragment_news_detail, container, false);
+
+        pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
+        btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
+        mPresenter = new NewsDetailPresenter(this);
+        // TODO
+        mPresenter.loadData("", nmList);
+
+        return view;
+    }
+
+    @Override
+    public void retry(final View view) {
+        // 隐藏进度条
+        pb.setVisibility(View.GONE);
+        // 显示重试按钮
+        btn_hint_retry.setVisibility(View.VISIBLE);
+        btn_hint_retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_hint_retry.setVisibility(View.GONE);
+                pb.setVisibility(View.VISIBLE);
+                // TODO
+                mPresenter.loadData("", nmList);
+            }
+        });
+    }
+
+    @Override
+    public void showView(View view) {
+        // 隐藏ProgressBar
+        pb.setVisibility(View.GONE);
 
         // 获取recyclerview
         rv_news_detail = (RecyclerView) view.findViewById(R.id.rv_news_detail);
+        // 显示
+        rv_news_detail.setVisibility(View.VISIBLE);
         rv_news_detail.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
         rv_news_detail.setItemAnimator(new DefaultItemAnimator());
-        List<String> sList = Arrays.asList(list);
-        adapter = new NewsDetailAdapter(getActivity(), sList);
+
+        adapter = new NewsDetailAdapter(getActivity(), nmList);
 
 
         if ("头条".equals(mHint)) {
@@ -94,8 +129,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         }
         adapter.setOnItemClickListener(this);
         rv_news_detail.setAdapter(adapter);
-
-        return view;
     }
 
     private void setHeader(RecyclerView view) {
@@ -106,5 +139,10 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     @Override
     public void onItemClick(int position, Object object) {
         Toast.makeText(getActivity(), String.valueOf(object), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(Object presenter) {
+
     }
 }
