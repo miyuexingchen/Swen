@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wcc.swen.R;
 import com.wcc.swen.model.NewsModel;
+import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.view.NewsDetailFragment;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by WangChenchen on 2016/8/19.
  */
-public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.ViewHolder> {
+public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static final int HEADER = 0;
     public static final int NORMAL = 1;
@@ -34,11 +35,11 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         mList = list;
     }
 
+    // headerView的getter setter
     public View getHeaderView() {
         return headerView;
     }
 
-    // headerView的getter setter
     public void setHeaderView(View headerView) {
         this.headerView = headerView;
         notifyItemInserted(0);
@@ -46,47 +47,64 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if (headerView == null) return NORMAL;
         if (position == 0) return HEADER;
-        NewsModel currNM = mList.get(position);
-        if (currNM.imgextra.size() == 0 || currNM.imgextra == null)
+        if (headerView == null) {
+            NewsModel currNM = mList.get(position - 1);
+            if (currNM.imgextra == null || currNM.imgextra.size() == 0)
+                return NORMAL;
+            return MULTIIMAGE;
+        }
+        NewsModel currNM = mList.get(position - 1);
+        if (currNM.imgextra == null || currNM.imgextra.size() == 0)
             return NORMAL;
         return MULTIIMAGE;
     }
 
+
     @Override
-    public NewsDetailAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (headerView != null && viewType == HEADER)
-            return new ViewHolder(headerView, viewType);
+            return new ViewHolderNormal(headerView);
         if (viewType == NORMAL) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.item_news_detail_rv, parent, false);
-            return new ViewHolder(view, viewType);
+            return new ViewHolderNormal(view);
         }
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_image_news_detail_rv, parent, false);
-        return new ViewHolder(view, viewType);
+        return new ViewHolderMultiImage(view);
     }
 
     @Override
-    public void onBindViewHolder(NewsDetailAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        if (getItemViewType(position) == HEADER) return;
+        if (getItemViewType(position) == HEADER)
+            return;
+
         final int pos = getRealPosition(holder);
-
         NewsModel currNM = mList.get(pos);
-        int viewType = getItemViewType(pos);
+        switch (getItemViewType(position)) {
+            case NORMAL:
+                ViewHolderNormal normalHolder = (ViewHolderNormal) holder;
+                normalHolder.tv_title.setText(currNM.title);
+                normalHolder.tv_author.setText(currNM.source);
+                normalHolder.tv_zan.setText(currNM.replyCount + "跟帖");
+                Glide.with(mContext).load(currNM.imgsrc).into(normalHolder.iv_item_news_detail_rv);
 
-        holder.tv_title.setText(currNM.title);
-        holder.tv_author.setText(currNM.source);
-        holder.tv_zan.setText(currNM.replyCount);
-        Glide.with(mContext).load(currNM.imgsrc).into(holder.iv_item_news_detail_rv);
+                break;
+            case MULTIIMAGE:
+                ViewHolderMultiImage imageHolder = (ViewHolderMultiImage) holder;
+                imageHolder.tv_title.setText(currNM.title);
+                imageHolder.tv_author.setText(currNM.source);
+                imageHolder.tv_zan.setText(currNM.replyCount + "跟帖");
+                Glide.with(mContext).load(currNM.imgsrc).into(imageHolder.iv_item_news_detail_rv);
 
-        if (viewType == MULTIIMAGE) {
-            if (currNM.imgextra.size() > 1) {
-                Glide.with(mContext).load(currNM.imgextra.get(0)).into(holder.iv_center);
-                Glide.with(mContext).load(currNM.imgextra.get(1)).into(holder.iv_right);
-            }
+                if (currNM.imgextra != null && currNM.imgextra.size() > 1) {
+                    Glide.with(mContext).load(currNM.imgextra.get(0).imgsrc).into(imageHolder.iv_center);
+                    Glide.with(mContext).load(currNM.imgextra.get(1).imgsrc).into(imageHolder.iv_right);
+                }
+                break;
         }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,34 +134,41 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<NewsDetailAdapter.Vi
         void onItemClick(int position, Object object);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
+    public class ViewHolderNormal extends RecyclerView.ViewHolder {
         private ImageView iv_item_news_detail_rv;
-        private ImageView iv_center;
-        private ImageView iv_right;
         private TextView tv_title;
         private TextView tv_author;
         private TextView tv_zan;
 
-        public ViewHolder(View itemView, int viewType) {
+        public ViewHolderNormal(View itemView) {
+            super(itemView);
+            if (itemView == headerView) return;
+            iv_item_news_detail_rv = (ImageView) itemView.findViewById(R.id.iv_item_news_detail_rv);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title_news_detail);
+            tv_author = (TextView) itemView.findViewById(R.id.tv_author_news_detail);
+            tv_zan = (TextView) itemView.findViewById(R.id.tv_zan_news_detail);
+        }
+    }
+
+    public class ViewHolderMultiImage extends RecyclerView.ViewHolder {
+
+        private ImageView iv_center;
+        private ImageView iv_right;
+        private ImageView iv_item_news_detail_rv;
+        private TextView tv_title;
+        private TextView tv_author;
+        private TextView tv_zan;
+
+        public ViewHolderMultiImage(View itemView) {
             super(itemView);
 
-            if (itemView == headerView) return;
-            if (viewType == NORMAL) {
-                iv_item_news_detail_rv = (ImageView) itemView.findViewById(R.id.iv_item_news_detail_rv);
-                tv_title = (TextView) itemView.findViewById(R.id.tv_title_news_detail);
-                tv_author = (TextView) itemView.findViewById(R.id.tv_author_news_detail);
-                tv_zan = (TextView) itemView.findViewById(R.id.tv_zan_news_detail);
-            }
-
-            if (viewType == MULTIIMAGE) {
-                iv_item_news_detail_rv = (ImageView) itemView.findViewById(R.id.iv_left_item_image);
-                iv_center = (ImageView) itemView.findViewById(R.id.iv_center_item_image);
-                iv_right = (ImageView) itemView.findViewById(R.id.iv_right_item_image);
-                tv_title = (TextView) itemView.findViewById(R.id.tv_title_item_image);
-                tv_author = (TextView) itemView.findViewById(R.id.tv_source_item_image);
-                tv_zan = (TextView) itemView.findViewById(R.id.tv_reply_item_image);
-            }
+            iv_item_news_detail_rv = (ImageView) itemView.findViewById(R.id.iv_left_item_image);
+            iv_center = (ImageView) itemView.findViewById(R.id.iv_center_item_image);
+            iv_right = (ImageView) itemView.findViewById(R.id.iv_right_item_image);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title_item_image);
+            tv_author = (TextView) itemView.findViewById(R.id.tv_source_item_image);
+            tv_zan = (TextView) itemView.findViewById(R.id.tv_reply_item_image);
         }
     }
 }
+

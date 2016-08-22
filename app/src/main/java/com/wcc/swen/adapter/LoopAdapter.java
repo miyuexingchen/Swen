@@ -11,6 +11,10 @@ import com.bumptech.glide.Glide;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.wcc.swen.R;
+import com.wcc.swen.model.Ads;
+import com.wcc.swen.model.NewsModel;
+
+import java.util.List;
 
 /**
  * Created by WangChenchen on 2016/8/18.
@@ -18,7 +22,7 @@ import com.wcc.swen.R;
  */
 public class LoopAdapter extends LoopPagerAdapter {
 
-    private int imgs[] = {
+   /* private int imgs[] = {
             R.mipmap.i1,
             R.mipmap.i2,
             R.mipmap.i3,
@@ -37,10 +41,15 @@ public class LoopAdapter extends LoopPagerAdapter {
             "印度洪水致多人死亡 逝者在河边被火葬",
             "利比亚与马耳他海域300余名难民获救",
             "叙利亚阿勒颇遭政府军空袭 建筑成废墟"
-    };
+    };*/
 
-    public LoopAdapter(RollPagerView viewPager) {
+    private NewsModel nm;
+    private List<Ads> adsList;
+
+    public LoopAdapter(RollPagerView viewPager, NewsModel nm) {
         super(viewPager);
+        this.nm = nm;
+        adsList = nm.ads;
     }
 
     @Override
@@ -49,17 +58,17 @@ public class LoopAdapter extends LoopPagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_rollpagerveiw, container, false);
         final ImageView imageView = (ImageView) view.findViewById(R.id.iv_rpv);
 //        imageView.setImageResource(imgs[position]);
-        Glide.with(container.getContext()).load(urls[position]).into(imageView);
+        Glide.with(container.getContext()).load(adsList.get(position).imgsrc).into(imageView);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         TextView tv_rpv = (TextView) view.findViewById(R.id.tv_rpv);
-        tv_rpv.setText(strs[position]);
+        tv_rpv.setText(adsList.get(position).title);
         return view;
     }
 
     @Override
     public int getRealCount() {
-        return imgs.length;
+        return adsList.size();
     }
 }

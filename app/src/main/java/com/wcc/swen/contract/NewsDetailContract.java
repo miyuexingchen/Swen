@@ -18,9 +18,13 @@ public interface NewsDetailContract {
         void retry(android.view.View view);
 
         android.view.View getView();
+
+        List<NewsModel> getList();
+
+        void setList(List<NewsModel> list);
     }
 
     interface Presenter extends BasePresenter {
-        void loadData(String url, List<NewsModel> list);
+        void loadData(String url);
     }
 }

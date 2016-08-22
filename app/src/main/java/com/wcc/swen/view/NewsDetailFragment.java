@@ -60,6 +60,16 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     }
 
     @Override
+    public List<NewsModel> getList() {
+        return nmList;
+    }
+
+    @Override
+    public void setList(List<NewsModel> list) {
+        this.nmList = list;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHint = getArguments().getString("hint");
@@ -78,11 +88,12 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
         btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
 
-        // 创建presenter
-        mPresenter = new NewsDetailPresenter(this);
-
-        // TODO
-        mPresenter.loadData(url, nmList);
+        if (mHint.equals("头条")) {
+            // 创建presenter
+            mPresenter = new NewsDetailPresenter(this);
+            // TODO
+            mPresenter.loadData(url);
+        }
 
         return view;
     }
@@ -99,7 +110,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                 btn_hint_retry.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
                 // TODO
-                mPresenter.loadData(url, nmList);
+                mPresenter.loadData(url);
             }
         });
     }
@@ -122,7 +133,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         if ("头条".equals(mHint)) {
             // 实现轮播效果
             setHeader(rv_news_detail);
-            rollPagerView.setAdapter(new LoopAdapter(rollPagerView));
+            rollPagerView.setAdapter(new LoopAdapter(rollPagerView, nmList.get(0)));
             rollPagerView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {

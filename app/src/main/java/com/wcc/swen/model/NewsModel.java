@@ -1,5 +1,7 @@
 package com.wcc.swen.model;
 
+import android.bluetooth.le.AdvertiseSettings;
+
 import java.util.List;
 
 /**
@@ -8,52 +10,43 @@ import java.util.List;
 public class NewsModel {
 
     // 共同
+    public String postid;
+    public int votecount;
+    public int replyCount;
+    public String skipID;
+    public String digest;
+    public String skipType;
+    public String docid;
     public String title;
     public String source;
+    public int priority;
+    public String lmodify;
+    public String boardid;
     public String imgsrc;
     public String ptime;
-    public int replyCount;
-
     // 顶部
-    public List<NewsModel> ads;
+    public boolean hasCover;
+    public int hasHead;
+    public int hasImg;
+    public boolean hasIcon;
+    public int order;
+    public List<Ads> ads;
     public String photosetID;
-    public String skipID;
-
+    public String template;
+    public String alias;
+    public String cid;
+    public int hasAD;
+    public String ename;
+    public String tname;
     // 多图
     public List<ImageNewsModel> imgextra;
 
     // 普通
-    public String digest;
+    public String url_3w;
+    public String ltitle;
     public String url;
+    public String specialID;
+    public String subtitle;
 
-    public NewsModel(String title, String source, String imgsrc, String ptime, int replyCount, List<NewsModel> ads, String photosetID, String skipID, List<ImageNewsModel> imgextra, String digest, String url) {
-        this.title = title;
-        this.source = source;
-        this.imgsrc = imgsrc;
-        this.ptime = ptime;
-        this.replyCount = replyCount;
-        this.ads = ads;
-        this.photosetID = photosetID;
-        this.skipID = skipID;
-        this.imgextra = imgextra;
-        this.digest = digest;
-        this.url = url;
-    }
 
-    @Override
-    public String toString() {
-        return "NewsModel{" +
-                "title='" + title + '\'' +
-                ", source='" + source + '\'' +
-                ", imgsrc='" + imgsrc + '\'' +
-                ", ptime='" + ptime + '\'' +
-                ", replyCount=" + replyCount +
-                ", ads=" + ads +
-                ", photosetID='" + photosetID + '\'' +
-                ", skipID='" + skipID + '\'' +
-                ", imgextra=" + imgextra +
-                ", digest='" + digest + '\'' +
-                ", url='" + url + '\'' +
-                '}';
-    }
 }
