@@ -23,6 +23,8 @@ import com.wcc.swen.adapter.NewsDetailAdapter;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
+import com.wcc.swen.utils.NetUtils;
+import com.wcc.swen.utils.ToastUtils;
 import com.wcc.swen.utils.Url;
 
 import java.util.ArrayList;
@@ -34,17 +36,18 @@ import java.util.List;
 public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener, NewsDetailContract.View {
 
     private final String tag = "NewsDetailFragment";
+    private String mHint;
+    private List<NewsModel> nmList = new ArrayList<NewsModel>();
+    private NewsDetailPresenter mPresenter;
+
     private NewsDetailAdapter adapter;
+
     private RollPagerView rollPagerView;
     private TextView tv_rpv;
-
-    private String mHint;
     private RecyclerView rv_news_detail;
     private Button btn_hint_retry;
     private ProgressBar pb;
 
-    private NewsDetailPresenter mPresenter;
-    private List<NewsModel> nmList = new ArrayList<NewsModel>();
     private View view;
     // 请求数据起始标识
     private int page = 0;
@@ -55,13 +58,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         data.putString("hint", hint);
         NewsDetailFragment fragment = new NewsDetailFragment();
         fragment.setArguments(data);
-
         return fragment;
-    }
-
-    @Override
-    public List<NewsModel> getList() {
-        return nmList;
     }
 
     @Override
@@ -73,7 +70,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHint = getArguments().getString("hint");
-
     }
 
     @Override
@@ -84,6 +80,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_news_detail, container, false);
         pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
         btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
@@ -91,7 +88,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         if (mHint.equals("头条")) {
             // 创建presenter
             mPresenter = new NewsDetailPresenter(this);
-            // TODO
             mPresenter.loadData(url);
         }
 
@@ -109,7 +105,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             public void onClick(View v) {
                 btn_hint_retry.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
-                // TODO
                 mPresenter.loadData(url);
             }
         });

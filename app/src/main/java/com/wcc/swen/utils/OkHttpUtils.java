@@ -6,6 +6,7 @@ import android.os.Looper;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -27,7 +28,8 @@ public class OkHttpUtils {
     private Call call1;
 
     private OkHttpUtils() {
-        mOkHttpClient = new OkHttpClient();
+        mOkHttpClient = new OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS)
+                .build();
         mHandler = new Handler(Looper.getMainLooper());
         gson = new Gson();
     }

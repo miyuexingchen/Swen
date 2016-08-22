@@ -19,8 +19,6 @@ public interface NewsDetailContract {
 
         android.view.View getView();
 
-        List<NewsModel> getList();
-
         void setList(List<NewsModel> list);
     }
 
