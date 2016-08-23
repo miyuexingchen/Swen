@@ -85,6 +85,9 @@ public class Url {
     // 军事
     public static final String MILITARY_ID = "T1348648141035";
 
+    // 照片集
+    public static final String PHOTO_SET = HOST + "photo/api/set/";
+
     /**
      * 视频 http://c.3g.163.com/nc/video/list/V9LG4B3A0/n/10-10.html
      */

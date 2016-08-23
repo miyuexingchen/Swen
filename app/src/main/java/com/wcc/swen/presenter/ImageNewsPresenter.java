@@ -1,0 +1,77 @@
+package com.wcc.swen.presenter;
+
+import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.View;
+
+import com.google.gson.Gson;
+import com.wcc.swen.contract.NewsDetailContract;
+import com.wcc.swen.model.ImageNewsModel;
+import com.wcc.swen.model.Photo;
+import com.wcc.swen.utils.NetUtils;
+import com.wcc.swen.utils.OkHttpUtils;
+import com.wcc.swen.utils.ToastUtils;
+
+import java.util.List;
+
+/**
+ * Created by WangChenchen on 2016/8/23.
+ */
+public class ImageNewsPresenter implements NewsDetailContract.Presenter {
+
+    private static final int ON_SUCCESS = 0;
+    private static final int ON_FAILURE = 1;
+    private NewsDetailContract.View mView;
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case ON_SUCCESS:
+                    mView.showView();
+                    break;
+                case ON_FAILURE:
+                    mView.retry();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
+
+    public ImageNewsPresenter(NewsDetailContract.View view) {
+        mView = view;
+    }
+
+    @Override
+    public void loadData(final String url) {
+
+        boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Activity) mView));
+        if (!isNetWorkAccessed) {
+            ToastUtils.show("网络不可用，请检查网络后再试。", ((Activity) mView));
+            mView.retry();
+            return;
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                String str = OkHttpUtils.getResponse(url);
+                Gson gson = new Gson();
+                ImageNewsModel inm = gson.fromJson(str, ImageNewsModel.class);
+                List<Photo> list = inm.photos;
+                mView.setList(list);
+                if (list.size() > 0)
+                    mHandler.sendEmptyMessage(ON_SUCCESS);
+                else
+                    mHandler.sendEmptyMessage(ON_FAILURE);
+            }
+        }.start();
+    }
+
+    @Override
+    public void start() {
+
+    }
+}

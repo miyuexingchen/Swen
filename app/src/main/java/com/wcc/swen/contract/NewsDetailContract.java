@@ -9,17 +9,15 @@ import java.util.List;
 /**
  * Created by WangChenchen on 2016/8/19.
  */
-public interface NewsDetailContract {
+public interface NewsDetailContract<T> {
 
-    interface View extends BaseView {
+    interface View<T> extends BaseView {
 
-        void showView(android.view.View view);
+        void showView();
 
-        void retry(android.view.View view);
+        void retry();
 
-        android.view.View getView();
-
-        void setList(List<NewsModel> list);
+        void setList(List<T> list);
     }
 
     interface Presenter extends BasePresenter {

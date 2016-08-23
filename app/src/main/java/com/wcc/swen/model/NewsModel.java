@@ -1,7 +1,5 @@
 package com.wcc.swen.model;
 
-import android.bluetooth.le.AdvertiseSettings;
-
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class NewsModel {
     public String ename;
     public String tname;
     // 多图
-    public List<ImageNewsModel> imgextra;
+    public List<ImageModel> imgextra;
 
     // 普通
     public String url_3w;

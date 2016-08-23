@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
+import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
@@ -36,7 +38,6 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
 
     private static final int ON_SUCCESS = 0;
     private static final int ON_FAILURE = 1;
-    private static final int NETWORK_CANNOT_ACCESS = 2;
 
     private NewsDetailContract.View mView;
     Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -44,10 +45,10 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case ON_SUCCESS:
-                    mView.showView(mView.getView());
+                    mView.showView();
                     break;
                 case ON_FAILURE:
-                    mView.retry(mView.getView());
+                    mView.retry();
                     break;
                 default:
                     super.handleMessage(msg);
@@ -67,10 +68,10 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
 
     @Override
     public void loadData(final String url) {
-        boolean isNetWorkConnected = NetUtils.isNetworkConnected(mView.getView().getContext());
+        boolean isNetWorkConnected = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkConnected) {
-            ToastUtils.show("网络不可用，请检查网络后再试。", mView.getView().getContext());
-            mView.retry(mView.getView());
+            ToastUtils.show("网络不可用，请检查网络后再试。", (((Fragment) mView).getActivity()));
+            mView.retry();
             return;
         }
 

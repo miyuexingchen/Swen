@@ -1,5 +1,6 @@
 package com.wcc.swen.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,9 +19,11 @@ import android.widget.Toast;
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.wcc.swen.R;
+import com.wcc.swen.activity.ImageNewsActivity;
 import com.wcc.swen.adapter.LoopAdapter;
 import com.wcc.swen.adapter.NewsDetailAdapter;
 import com.wcc.swen.contract.NewsDetailContract;
+import com.wcc.swen.model.Ads;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
 import com.wcc.swen.utils.NetUtils;
@@ -33,7 +36,7 @@ import java.util.List;
 /**
  * Created by WangChenchen on 2016/8/18.
  */
-public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener, NewsDetailContract.View {
+public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener, NewsDetailContract.View<NewsModel> {
 
     private final String tag = "NewsDetailFragment";
     private String mHint;
@@ -72,11 +75,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         mHint = getArguments().getString("hint");
     }
 
-    @Override
-    public View getView() {
-        return view;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,7 +93,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     }
 
     @Override
-    public void retry(final View view) {
+    public void retry() {
         // 隐藏进度条
         pb.setVisibility(View.GONE);
         // 显示重试按钮
@@ -103,15 +101,15 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         btn_hint_retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_hint_retry.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
+                btn_hint_retry.setVisibility(View.GONE);
                 mPresenter.loadData(url);
             }
         });
     }
 
     @Override
-    public void showView(View view) {
+    public void showView() {
         // 隐藏ProgressBar
         pb.setVisibility(View.GONE);
 
@@ -133,6 +131,15 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                 @Override
                 public void onItemClick(int position) {
                     Toast.makeText(getActivity(), position + " is clicked.", Toast.LENGTH_SHORT).show();
+                    // TODO
+                    final NewsModel newsModel = nmList.get(0);
+                    List<Ads> ads = newsModel.ads;
+                    String url = ads.get(position).url;
+                    String title = ads.get(position).title;
+                    Intent intent = new Intent(getActivity(), ImageNewsActivity.class);
+                    intent.putExtra("url", url);
+                    intent.putExtra("title", title);
+                    startActivity(intent);
                 }
             });
 
@@ -149,6 +156,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     @Override
     public void onItemClick(int position, Object object) {
+        // TODO
         Toast.makeText(getActivity(), String.valueOf(object), Toast.LENGTH_SHORT).show();
     }
 
