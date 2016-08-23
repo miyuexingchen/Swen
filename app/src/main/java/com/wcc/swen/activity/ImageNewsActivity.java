@@ -1,5 +1,7 @@
 package com.wcc.swen.activity;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +65,31 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     }
 
     private void initView() {
+
+
+        // 当版本大于5.0，调用方法更改状态栏颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.BLACK);   //这里动态修改颜色
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Color.BLACK);
+        // 这句话保证title能被修改
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // 给HomeButton设置点击事件
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         rv_image_news = (RecyclerView) findViewById(R.id.rv_image_news);
         tv_title_image_news = (TextView) findViewById(R.id.tv_title_image_news);
         tv_page_image_news = (TextView) findViewById(R.id.tv_page_image_news);

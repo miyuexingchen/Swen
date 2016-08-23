@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jude.rollviewpager.OnItemClickListener;
@@ -26,8 +25,6 @@ import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.Ads;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
-import com.wcc.swen.utils.NetUtils;
-import com.wcc.swen.utils.ToastUtils;
 import com.wcc.swen.utils.Url;
 
 import java.util.ArrayList;
@@ -38,16 +35,13 @@ import java.util.List;
  */
 public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.OnItemClickListener, NewsDetailContract.View<NewsModel> {
 
-    private final String tag = "NewsDetailFragment";
     private String mHint;
-    private List<NewsModel> nmList = new ArrayList<NewsModel>();
+    private List<NewsModel> nmList = new ArrayList<>();
     private NewsDetailPresenter mPresenter;
 
     private NewsDetailAdapter adapter;
 
     private RollPagerView rollPagerView;
-    private TextView tv_rpv;
-    private RecyclerView rv_news_detail;
     private Button btn_hint_retry;
     private ProgressBar pb;
 
@@ -114,7 +108,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         pb.setVisibility(View.GONE);
 
         // 获取recyclerview
-        rv_news_detail = (RecyclerView) view.findViewById(R.id.rv_news_detail);
+        RecyclerView rv_news_detail = (RecyclerView) view.findViewById(R.id.rv_news_detail);
         // 显示
         rv_news_detail.setVisibility(View.VISIBLE);
         rv_news_detail.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
@@ -130,8 +124,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             rollPagerView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    Toast.makeText(getActivity(), position + " is clicked.", Toast.LENGTH_SHORT).show();
-                    // TODO
                     final NewsModel newsModel = nmList.get(0);
                     List<Ads> ads = newsModel.ads;
                     String url = ads.get(position).url;
