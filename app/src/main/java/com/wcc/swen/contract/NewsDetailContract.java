@@ -22,5 +22,7 @@ public interface NewsDetailContract<T> {
 
     interface Presenter extends BasePresenter {
         void loadData(String url);
+
+        void loadRefreshData(String url);
     }
 }

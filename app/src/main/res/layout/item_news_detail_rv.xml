@@ -39,7 +39,7 @@
             android:paddingLeft="5dp"
             android:text="New Text"
             android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_zan_news_detail"
@@ -52,6 +52,6 @@
             android:paddingLeft="5dp"
             android:text="New Text"
             android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 </LinearLayout>

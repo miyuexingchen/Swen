@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
@@ -68,6 +67,11 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
                     mHandler.sendEmptyMessage(ON_FAILURE);
             }
         }.start();
+    }
+
+    @Override
+    public void loadRefreshData(final String url) {
+
     }
 
     @Override

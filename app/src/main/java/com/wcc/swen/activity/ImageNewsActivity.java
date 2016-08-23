@@ -54,7 +54,6 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
         // 对url进行重新拼接
         url = url.substring(4);
         url = Url.PHOTO_SET + url.substring(0, 4) + "/" + url.substring(5) + ".json";
-        LogUtils.e(tag, url);
         // 通过Presenter获取数据
         mPresenter = new ImageNewsPresenter(this);
 
