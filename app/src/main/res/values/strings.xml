@@ -5,4 +5,5 @@
     <string name="swen">新闻</string>
     <string name="video">视频</string>
     <string name="wea">天气</string>
+    <string name="title_activity_web_news">WebNewsActivity</string>
 </resources>

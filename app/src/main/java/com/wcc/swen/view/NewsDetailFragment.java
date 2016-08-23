@@ -19,12 +19,14 @@ import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
 import com.wcc.swen.R;
 import com.wcc.swen.activity.ImageNewsActivity;
+import com.wcc.swen.activity.WebNewsActivity;
 import com.wcc.swen.adapter.LoopAdapter;
 import com.wcc.swen.adapter.NewsDetailAdapter;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.Ads;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
+import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.Url;
 
 import java.util.ArrayList;
@@ -126,12 +128,8 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                 public void onItemClick(int position) {
                     final NewsModel newsModel = nmList.get(0);
                     List<Ads> ads = newsModel.ads;
-                    String url = ads.get(position).url;
-                    String title = ads.get(position).title;
-                    Intent intent = new Intent(getActivity(), ImageNewsActivity.class);
-                    intent.putExtra("url", url);
-                    intent.putExtra("title", title);
-                    startActivity(intent);
+                    Ads ad = ads.get(position);
+                    toImageNewsActivity(ad.url, ad.title);
                 }
             });
 
@@ -141,6 +139,16 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         rv_news_detail.setAdapter(adapter);
     }
 
+    // 添加参数跳转到图片新闻详情
+    private void toImageNewsActivity(String u, String t) {
+        String url = u;
+        String title = t;
+        Intent intent = new Intent(getActivity(), ImageNewsActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        startActivity(intent);
+    }
+
     private void setHeader(RecyclerView view) {
         rollPagerView = (RollPagerView) LayoutInflater.from(getActivity()).inflate(R.layout.header_news_detail_rv, view, false);
         adapter.setHeaderView(rollPagerView);
@@ -148,8 +156,17 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     @Override
     public void onItemClick(int position, Object object) {
-        // TODO
-        Toast.makeText(getActivity(), String.valueOf(object), Toast.LENGTH_SHORT).show();
+        NewsModel nm = nmList.get(position);
+        if (nm.imgextra != null && !nm.imgextra.isEmpty()) {
+            // 如果是图片新闻，则跳转到图片新闻详情
+            toImageNewsActivity(nm.photosetID, nm.title);
+        } else {
+            // 如果是网页新闻，则用WebView加载网页
+            LogUtils.e("NewsDetailPresenter", nm.docid);
+            Intent intent = new Intent(getActivity(), WebNewsActivity.class);
+            intent.putExtra("url", Url.TOUCH_HEAD + nm.docid + Url.TOUCH_END);
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -26,6 +26,11 @@ public class Url {
 
     public static final String OTHER_TYPE = "list";
 
+
+    // http://3g.163.com/touch/article.html?docid=BV5PDJK000014JB5&version=dd
+
+    public static final String TOUCH_HEAD = "http://3g.163.com/touch/article.html?docid=";
+    public static final String TOUCH_END = "&version=dd";
     // 足球
     public static final String FOOTBALL_ID = "T1399700447917";
     // 娱乐
