@@ -1,6 +1,7 @@
 package com.wcc.swen.adapter;
 
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,17 +11,17 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.wcc.swen.model.Photo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by WangChenchen on 2016/8/23.
  */
-public class ImageNewsAdapter extends RecyclerView.Adapter<ImageNewsAdapter.ViewHolder> {
+public class ImageNewsAdapter extends PagerAdapter {
 
     private Context mContext;
     private List<Photo> mList;
-    private OnPageChangeListener listener;
-    private int currPos = 0;
+    private List<ImageView> list = new ArrayList<>();
 
     public ImageNewsAdapter(Context context, List<Photo> list) {
         mContext = context;
@@ -28,41 +29,32 @@ public class ImageNewsAdapter extends RecyclerView.Adapter<ImageNewsAdapter.View
     }
 
     @Override
-    public ImageNewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ImageView image = new ImageView(mContext);
-        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        return new ViewHolder(image);
-    }
-
-    @Override
-    public void onBindViewHolder(ImageNewsAdapter.ViewHolder holder, int position) {
-        if (listener != null)
-            listener.onPageChange(position);
-        Glide.with(mContext).load(mList.get(position).imgurl).into(holder.image);
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return mList.size();
     }
 
-    public void setPageChangeListener(OnPageChangeListener listener) {
-        this.listener = listener;
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
     }
 
-    public interface OnPageChangeListener {
-        void onPageChange(int position);
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        ImageView view = (ImageView) object;
+        container.removeView(view);
+        list.add(view);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        private ImageView image;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            image = (ImageView) itemView;
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        ImageView view = null;
+        if (list.isEmpty()) {
+            view = new ImageView(mContext);
+        } else {
+            view = list.remove(0);
         }
+        Glide.with(mContext).load(mList.get(position).imgurl).into(view);
+        container.addView(view);
+        return view;
     }
 }

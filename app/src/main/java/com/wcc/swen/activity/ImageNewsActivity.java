@@ -4,14 +4,11 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,7 +25,7 @@ import java.util.List;
 /**
  * Created by WangChenchen on 2016/8/23.
  */
-public class ImageNewsActivity extends AppCompatActivity implements NewsDetailContract.View<Photo>, ImageNewsAdapter.OnPageChangeListener {
+public class ImageNewsActivity extends AppCompatActivity implements NewsDetailContract.View<Photo> {
 
     private static final String tag = "ImageNewsActivity";
 
@@ -40,7 +37,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     private TextView tv_title_image_news;
     private TextView tv_page_image_news;
     private TextView tv_image_news;
-    private RecyclerView rv_image_news;
+    private ViewPager vp_image_news;
     private ProgressBar pb_image_news;
     private Button btn_image_news;
 
@@ -90,7 +87,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
             }
         });
 
-        rv_image_news = (RecyclerView) findViewById(R.id.rv_image_news);
+        vp_image_news = (ViewPager) findViewById(R.id.vp_image_news);
         tv_title_image_news = (TextView) findViewById(R.id.tv_title_image_news);
         tv_page_image_news = (TextView) findViewById(R.id.tv_page_image_news);
         tv_image_news = (TextView) findViewById(R.id.tv_image_news);
@@ -103,7 +100,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     public void showView() {
 
         pb_image_news.setVisibility(View.GONE);
-        rv_image_news.setVisibility(View.VISIBLE);
+        vp_image_news.setVisibility(View.VISIBLE);
         tv_title_image_news.setVisibility(View.VISIBLE);
         tv_page_image_news.setVisibility(View.VISIBLE);
         tv_image_news.setVisibility(View.VISIBLE);
@@ -113,11 +110,24 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
         tv_title_image_news.setText(title);
 
         ImageNewsAdapter adapter = new ImageNewsAdapter(this, list);
-        adapter.setPageChangeListener(this);
+        vp_image_news.setAdapter(adapter);
+        vp_image_news.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        rv_image_news.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
-        rv_image_news.setItemAnimator(new DefaultItemAnimator());
-        rv_image_news.setAdapter(adapter);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tv_page_image_news.setText((position + 1) + "/" + list.size());
+                tv_image_news.setText(list.get(position).note);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -142,11 +152,5 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     @Override
     public void setPresenter(Object presenter) {
 
-    }
-
-    @Override
-    public void onPageChange(int position) {
-        tv_page_image_news.setText((position + 1) + "/" + list.size());
-        tv_image_news.setText(list.get(position).note);
     }
 }
