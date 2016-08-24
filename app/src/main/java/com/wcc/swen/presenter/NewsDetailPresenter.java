@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.model.NewsWrapper;
+import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.NetUtils;
 import com.wcc.swen.utils.OkHttpUtils;
 import com.wcc.swen.utils.ToastUtils;
@@ -70,9 +71,10 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
                     Gson gson = new Gson();
                     NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
                     List<NewsModel> list = nw.T1348647909107;
-                    mView.setList(list);
-                    if (list.size() > 0)
+                    if (list.size() > 0) {
+                        mView.setList(list);
                         mHandler.sendEmptyMessage(ON_SUCCESS);
+                    }
                     else
                         mHandler.sendEmptyMessage(ON_FAILURE);
 
@@ -98,13 +100,43 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
                 Gson gson = new Gson();
                 NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
                 List<NewsModel> list = nw.T1348647909107;
-                mView.setList(list);
-                if (list.size() > 0)
+                if (list.size() > 0) {
+                    mView.setList(list);
                     ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_REFRESH_SUCCESS);
+                }
                 else
                     ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_REFRESH_FAILURE);
 
             }
         }.start();
     }
+
+    @Override
+    public void loadMoreData(final String url) {
+        // 加载数据、解析并给mView的nmList
+        boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
+        if (!isNetWorkAccessed) {
+            ToastUtils.show("网络不可用，请检查网络后再试。", (((Fragment) mView).getActivity()));
+            return;
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                String str = OkHttpUtils.getResponse(url);
+                LogUtils.e("NewsDetailPresenter", str);
+                Gson gson = new Gson();
+                NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
+                List<NewsModel> list = nw.T1348647909107;
+                if (list.size() > 0) {
+                    mView.setList(list);
+                    ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_LOAD_MORE_SUCCESS);
+                } else
+                    ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_LOAD_MORE_FAILURE);
+
+            }
+        }.start();
+    }
+
+
 }

@@ -24,5 +24,7 @@ public interface NewsDetailContract<T> {
         void loadData(String url);
 
         void loadRefreshData(String url);
+
+        void loadMoreData(String url);
     }
 }

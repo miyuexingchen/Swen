@@ -60,9 +60,10 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
                 Gson gson = new Gson();
                 ImageNewsModel inm = gson.fromJson(str, ImageNewsModel.class);
                 List<Photo> list = inm.photos;
-                mView.setList(list);
-                if (list.size() > 0)
+                if (list.size() > 0) {
+                    mView.setList(list);
                     mHandler.sendEmptyMessage(ON_SUCCESS);
+                }
                 else
                     mHandler.sendEmptyMessage(ON_FAILURE);
             }
@@ -71,6 +72,11 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
 
     @Override
     public void loadRefreshData(final String url) {
+
+    }
+
+    @Override
+    public void loadMoreData(String url) {
 
     }
 

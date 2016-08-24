@@ -1,6 +1,7 @@
 package com.wcc.swen.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,14 @@ import java.util.List;
  */
 public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int HEADER = 0;
-    public static final int NORMAL = 1;
-    public static final int MULTIIMAGE = 2;
+    public static final int LOAD_MORE = 4;
+    public static final int LOADING = 5;
+    public static final int NO_MORE_DATA = 6;
+    public final int HEADER = 0;
+    public final int NORMAL = 1;
+    public final int MULTIIMAGE = 2;
+    public final int FOOTER = 3;
+    private int load_status = LOAD_MORE;
     private Context mContext;
     // 将RollPagerView作为HeaderView添加给RecyclerView
     private List<NewsModel> mList;
@@ -35,11 +41,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mList = list;
     }
 
-    // headerView的getter setter
-    public View getHeaderView() {
-        return headerView;
-    }
-
+    // headerView的setter
     public void setHeaderView(View headerView) {
         this.headerView = headerView;
         notifyItemInserted(0);
@@ -48,6 +50,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return HEADER;
+        if (position + 1 == getItemCount()) return FOOTER;
         if (headerView == null) {
             NewsModel currNM = mList.get(position - 1);
             if (currNM.imgextra == null || currNM.imgextra.size() == 0)
@@ -70,6 +73,11 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return new ViewHolderNormal(view);
         }
 
+        if (viewType == FOOTER) {
+            TextView view = (TextView) LayoutInflater.from(mContext).inflate(R.layout.layout_footer, parent, false);
+            return new ViewHolderFooter(view);
+        }
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_image_news_detail_rv, parent, false);
         return new ViewHolderMultiImage(view);
     }
@@ -79,6 +87,23 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         if (getItemViewType(position) == HEADER)
             return;
+
+        if (getItemViewType(position) == FOOTER) {
+            ViewHolderFooter footerHolder = (ViewHolderFooter) holder;
+            switch (load_status) {
+                case LOAD_MORE:
+                    footerHolder.text.setText("上拉加载更多...");
+                    break;
+                case LOADING:
+                    footerHolder.text.setText("正在加载更多数据...");
+                    break;
+                case NO_MORE_DATA:
+                    footerHolder.text.setText("没有更多数据");
+                    break;
+            }
+            return;
+        }
+
 
         final int pos = getRealPosition(holder);
         NewsModel currNM = mList.get(pos);
@@ -116,6 +141,29 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         });
     }
 
+    // 用新数据替换mList内容
+    public void changeList(List<NewsModel> newData) {
+        mList.clear();
+        mList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
+    public List<NewsModel> getmList() {
+        return mList;
+    }
+
+    // 上拉加载更多数据时调用
+    public void addAll(List<NewsModel> newData) {
+        mList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
+    // 改变脚布局的文字
+    public void changeLoadStatus(int status) {
+        load_status = status;
+        notifyDataSetChanged();
+    }
+
     private int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
         return headerView == null ? position : position - 1;
@@ -127,7 +175,7 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return headerView == null ? mList.size() : mList.size() + 1;
+        return headerView == null ? mList.size() + 1 : mList.size() + 2;
     }
 
     public interface OnItemClickListener {
@@ -168,6 +216,15 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tv_title = (TextView) itemView.findViewById(R.id.tv_title_item_image);
             tv_author = (TextView) itemView.findViewById(R.id.tv_source_item_image);
             tv_zan = (TextView) itemView.findViewById(R.id.tv_reply_item_image);
+        }
+    }
+
+    public class ViewHolderFooter extends RecyclerView.ViewHolder {
+        private TextView text;
+
+        public ViewHolderFooter(View itemView) {
+            super(itemView);
+            text = (TextView) itemView;
         }
     }
 }

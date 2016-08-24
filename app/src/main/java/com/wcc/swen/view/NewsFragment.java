@@ -24,7 +24,6 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        LogUtils.e(tag, "NewsFragment.onCreateView");
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         // 实现tab效果

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.jude.rollviewpager.OnItemClickListener;
 import com.jude.rollviewpager.RollPagerView;
@@ -31,6 +31,7 @@ import com.wcc.swen.model.Ads;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
 import com.wcc.swen.utils.LogUtils;
+import com.wcc.swen.utils.ToastUtils;
 import com.wcc.swen.utils.Url;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     public final int ON_REFRESH_SUCCESS = 0;
     public final int ON_REFRESH_FAILURE = 1;
+    public final int ON_LOAD_MORE_SUCCESS = 2;
+    public final int ON_LOAD_MORE_FAILURE = 3;
     private String mHint;
     private List<NewsModel> nmList = new ArrayList<>();
     private NewsDetailPresenter mPresenter;
@@ -53,25 +56,38 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     private View view;
     // 请求数据起始标识
     private int page = 0;
-    String url = Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
     private SwipeRefreshLayout srl_news_detail;
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case ON_REFRESH_SUCCESS:
-                    adapter.notifyDataSetChanged();
+
+                    adapter.changeList(nmList);
+                    ToastUtils.show("共更新了" + nmList.size() + "条数据", NewsDetailFragment.this.getContext());
+                    nmList = adapter.getmList();
                     srl_news_detail.setRefreshing(false);
                     break;
                 case ON_REFRESH_FAILURE:
                     srl_news_detail.setRefreshing(false);
-                    // TODO
+                    ToastUtils.show("刷新失败", NewsDetailFragment.this.getContext());
+                    break;
+                case ON_LOAD_MORE_SUCCESS:
+                    ToastUtils.show("共加载了" + nmList.size() + "条数据", NewsDetailFragment.this.getContext());
+                    adapter.addAll(nmList);
+                    nmList = adapter.getmList();
+                    adapter.changeLoadStatus(NewsDetailAdapter.LOAD_MORE);
+                    break;
+                case ON_LOAD_MORE_FAILURE:
+                    adapter.changeLoadStatus(NewsDetailAdapter.LOAD_MORE);
                     break;
                 default:
                     super.handleMessage(msg);
             }
         }
     };
+    private LinearLayoutManager linearLayoutManager;
+    private int lastVisibleItem = 0;
 
     public static NewsDetailFragment newInstance(String hint) {
         Bundle data = new Bundle();
@@ -81,9 +97,15 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         return fragment;
     }
 
+    @NonNull
+    private String getUrl() {
+        return Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
+    }
+
     @Override
     public void setList(List<NewsModel> list) {
-        this.nmList = list;
+
+        nmList = list;
     }
 
     @Override
@@ -103,7 +125,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         if (mHint.equals("头条")) {
             // 创建presenter
             mPresenter = new NewsDetailPresenter(this);
-            mPresenter.loadData(url);
+            mPresenter.loadData(getUrl());
         }
 
         return view;
@@ -120,7 +142,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             public void onClick(View v) {
                 pb.setVisibility(View.VISIBLE);
                 btn_hint_retry.setVisibility(View.GONE);
-                mPresenter.loadData(url);
+                mPresenter.loadData(getUrl());
             }
         });
     }
@@ -143,16 +165,16 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         srl_news_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadRefreshData(url);
-                // 加载成功才能刷新
-//                adapter.notifyDataSetChanged();
+                page = 0;
+                mPresenter.loadRefreshData(getUrl());
             }
         });
         // 获取recyclerview
         RecyclerView rv_news_detail = (RecyclerView) view.findViewById(R.id.rv_news_detail);
         // 显示
         rv_news_detail.setVisibility(View.VISIBLE);
-        rv_news_detail.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
+        rv_news_detail.setLayoutManager(linearLayoutManager);
         rv_news_detail.setItemAnimator(new DefaultItemAnimator());
 
         adapter = new NewsDetailAdapter(getActivity(), nmList);
@@ -175,6 +197,30 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         }
         adapter.setOnItemClickListener(this);
         rv_news_detail.setAdapter(adapter);
+
+        // 监听RecyclerView滑动状态，如果滑动到最后，实现上拉刷新
+        rv_news_detail.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                    if (adapter.getItemCount() < 360) {
+                        adapter.changeLoadStatus(NewsDetailAdapter.LOADING);
+                        page += 10;
+                        LogUtils.e("NewsDetailPresenter", getUrl());
+                        mPresenter.loadMoreData(getUrl());
+                    } else {
+                        adapter.changeLoadStatus(NewsDetailAdapter.NO_MORE_DATA);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     // 添加参数跳转到图片新闻详情
@@ -194,13 +240,13 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     @Override
     public void onItemClick(int position, Object object) {
+        // TODO
         NewsModel nm = nmList.get(position);
         if (nm.imgextra != null && !nm.imgextra.isEmpty()) {
             // 如果是图片新闻，则跳转到图片新闻详情
             toImageNewsActivity(nm.photosetID, nm.title);
         } else {
             // 如果是网页新闻，则用WebView加载网页
-            LogUtils.e("NewsDetailPresenter", nm.docid);
             Intent intent = new Intent(getActivity(), WebNewsActivity.class);
             intent.putExtra("url", Url.TOUCH_HEAD + nm.docid + Url.TOUCH_END);
             startActivity(intent);
