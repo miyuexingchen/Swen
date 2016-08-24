@@ -8,4 +8,9 @@ import java.util.List;
 public class NewsWrapper {
 
     public List<NewsModel> T1348647909107;
+
+    public class SportsWrapper {
+        public List<NewsModel> T1348649079062;
+    }
 }
+

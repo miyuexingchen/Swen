@@ -98,8 +98,14 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     }
 
     @NonNull
-    private String getUrl() {
-        return Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
+    private String getUrl(String hint) {
+        switch (hint) {
+            case "头条":
+                return Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
+            case "体育":
+                return Url.PRE_NEWS + Url.SPORTS_ID + page + "-" + (page + 10) + ".html";
+        }
+        return "";
     }
 
     @Override
@@ -122,11 +128,10 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
         btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
 
-        if (mHint.equals("头条")) {
-            // 创建presenter
-            mPresenter = new NewsDetailPresenter(this);
-            mPresenter.loadData(getUrl());
-        }
+
+        // 创建presenter
+        mPresenter = new NewsDetailPresenter(this);
+        mPresenter.loadData(getUrl(mHint), mHint);
 
         return view;
     }
@@ -142,7 +147,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             public void onClick(View v) {
                 pb.setVisibility(View.VISIBLE);
                 btn_hint_retry.setVisibility(View.GONE);
-                mPresenter.loadData(getUrl());
+                mPresenter.loadData(getUrl(mHint), mHint);
             }
         });
     }
@@ -166,7 +171,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             @Override
             public void onRefresh() {
                 page = 0;
-                mPresenter.loadRefreshData(getUrl());
+                mPresenter.loadRefreshData(getUrl(mHint), mHint);
             }
         });
         // 获取recyclerview
@@ -179,7 +184,8 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
         adapter = new NewsDetailAdapter(getActivity(), nmList);
 
-        if ("头条".equals(mHint)) {
+
+        if (nmList.get(0).ads != null && nmList.get(0).ads.size() > 0) {
             // 实现轮播效果
             setHeader(rv_news_detail);
             rollPagerView.setAdapter(new LoopAdapter(rollPagerView, nmList.get(0)));
@@ -192,9 +198,9 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                     toImageNewsActivity(ad.url, ad.title);
                 }
             });
-
-
         }
+
+
         adapter.setOnItemClickListener(this);
         rv_news_detail.setAdapter(adapter);
 
@@ -207,8 +213,8 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                     if (adapter.getItemCount() < 360) {
                         adapter.changeLoadStatus(NewsDetailAdapter.LOADING);
                         page += 10;
-                        LogUtils.e("NewsDetailPresenter", getUrl());
-                        mPresenter.loadMoreData(getUrl());
+                        LogUtils.e("NewsDetailPresenter", getUrl(mHint));
+                        mPresenter.loadMoreData(getUrl(mHint), mHint);
                     } else {
                         adapter.changeLoadStatus(NewsDetailAdapter.NO_MORE_DATA);
                     }

@@ -44,7 +44,7 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadData(final String url) {
+    public void loadData(final String url, String tab) {
 
         boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Activity) mView));
         if (!isNetWorkAccessed) {
@@ -71,12 +71,12 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadRefreshData(final String url) {
+    public void loadRefreshData(final String url, String tab) {
 
     }
 
     @Override
-    public void loadMoreData(String url) {
+    public void loadMoreData(String url, String tab) {
 
     }
 

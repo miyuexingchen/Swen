@@ -50,6 +50,7 @@ public class ImageNewsAdapter extends PagerAdapter {
         ImageView view = null;
         if (list.isEmpty()) {
             view = new ImageView(mContext);
+            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else {
             view = list.remove(0);
         }

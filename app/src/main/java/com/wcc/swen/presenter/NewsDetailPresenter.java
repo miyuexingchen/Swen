@@ -15,6 +15,7 @@ import com.wcc.swen.utils.OkHttpUtils;
 import com.wcc.swen.utils.ToastUtils;
 import com.wcc.swen.view.NewsDetailFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadData(final String url) {
+    public void loadData(final String url, final String tab) {
         boolean isNetWorkConnected = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkConnected) {
             ToastUtils.show("网络不可用，请检查网络后再试。", (((Fragment) mView).getActivity()));
@@ -69,8 +70,17 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
                 try {
                     String str = OkHttpUtils.getResponse(url);
                     Gson gson = new Gson();
-                    NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
-                    List<NewsModel> list = nw.T1348647909107;
+                    List<NewsModel> list = new ArrayList<>();
+                    switch (tab) {
+                        case "头条":
+                            NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
+                            list = nw.T1348647909107;
+                            break;
+                        case "体育":
+                            NewsWrapper.SportsWrapper sw = gson.fromJson(str, NewsWrapper.SportsWrapper.class);
+                            list = sw.T1348649079062;
+                            break;
+                    }
                     if (list.size() > 0) {
                         mView.setList(list);
                         mHandler.sendEmptyMessage(ON_SUCCESS);
@@ -85,7 +95,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadRefreshData(final String url) {
+    public void loadRefreshData(final String url, final String tab) {
         // 加载数据、解析并给mView的nmList
         boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkAccessed) {
@@ -98,8 +108,17 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
             public void run() {
                 String str = OkHttpUtils.getResponse(url);
                 Gson gson = new Gson();
-                NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
-                List<NewsModel> list = nw.T1348647909107;
+                List<NewsModel> list = new ArrayList<>();
+                switch (tab) {
+                    case "头条":
+                        NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
+                        list = nw.T1348647909107;
+                        break;
+                    case "体育":
+                        NewsWrapper.SportsWrapper sw = gson.fromJson(str, NewsWrapper.SportsWrapper.class);
+                        list = sw.T1348649079062;
+                        break;
+                }
                 if (list.size() > 0) {
                     mView.setList(list);
                     ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_REFRESH_SUCCESS);
@@ -112,7 +131,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void loadMoreData(final String url) {
+    public void loadMoreData(final String url, final String tab) {
         // 加载数据、解析并给mView的nmList
         boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkAccessed) {
@@ -126,8 +145,17 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
                 String str = OkHttpUtils.getResponse(url);
                 LogUtils.e("NewsDetailPresenter", str);
                 Gson gson = new Gson();
-                NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
-                List<NewsModel> list = nw.T1348647909107;
+                List<NewsModel> list = new ArrayList<>();
+                switch (tab) {
+                    case "头条":
+                        NewsWrapper nw = gson.fromJson(str, NewsWrapper.class);
+                        list = nw.T1348647909107;
+                        break;
+                    case "体育":
+                        NewsWrapper.SportsWrapper sw = gson.fromJson(str, NewsWrapper.SportsWrapper.class);
+                        list = sw.T1348649079062;
+                        break;
+                }
                 if (list.size() > 0) {
                     mView.setList(list);
                     ((NewsDetailFragment) mView).mHandler.sendEmptyMessage(((NewsDetailFragment) mView).ON_LOAD_MORE_SUCCESS);

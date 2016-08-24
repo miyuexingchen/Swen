@@ -17,7 +17,6 @@ import com.wcc.swen.adapter.ImageNewsAdapter;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.Photo;
 import com.wcc.swen.presenter.ImageNewsPresenter;
-import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.Url;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
         // 通过Presenter获取数据
         mPresenter = new ImageNewsPresenter(this);
 
-        mPresenter.loadData(url);
+        mPresenter.loadData(url, "");
     }
 
     private void initView() {
@@ -138,7 +137,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
             public void onClick(View v) {
                 pb_image_news.setVisibility(View.VISIBLE);
                 btn_image_news.setVisibility(View.GONE);
-                mPresenter.loadData(url);
+                mPresenter.loadData(url, "");
             }
         });
     }

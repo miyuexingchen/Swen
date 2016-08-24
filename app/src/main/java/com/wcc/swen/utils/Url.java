@@ -31,12 +31,14 @@ public class Url {
 
     public static final String TOUCH_HEAD = "http://3g.163.com/touch/article.html?docid=";
     public static final String TOUCH_END = "&version=dd";
+
+    public static final String PRE_NEWS = HOST + "nc/article/list/";
     // 足球
     public static final String FOOTBALL_ID = "T1399700447917";
     // 娱乐
     public static final String ENTERTAINMENT_ID = "T1348648517839";
     // 体育
-    public static final String SPORTS_ID = "T1348649079062";
+    public static final String SPORTS_ID = "T1348649079062/";
     // 财经
     public static final String FINANCE_ID = "T1348648756099";
     // 科技
