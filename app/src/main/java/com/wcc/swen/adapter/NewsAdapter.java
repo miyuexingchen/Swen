@@ -13,8 +13,13 @@ import com.wcc.swen.view.NewsDetailFragment;
  */
 public class NewsAdapter extends FragmentPagerAdapter {
 
-    final int page_count = 2;
-    private String[] tabs = {"头条", "体育"};
+    private String[] tabs = {"头条", "体育", "娱乐", "财经", "科技", "电影", "汽车", "笑话", "游戏", "足球"
+            , "时尚", "情感", "精选", "电台"
+            , "NBA", "数码", "移动", "彩票"
+            , "教育", "论坛", "旅游", "手机"
+            , "博客", "社会", "家居", "暴雪游戏"
+            , "亲子", "CBA", "消息", "军事"};
+
     private Context mContext;
 
     public NewsAdapter(FragmentManager fm, Context context) {

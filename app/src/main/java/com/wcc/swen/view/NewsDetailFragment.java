@@ -103,9 +103,70 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             case "头条":
                 return Url.NEWS_DETAIL + Url.HEADLINE_TYPE + Url.HEADLINE_ID + page + "-" + (page + 10) + ".html";
             case "体育":
-                return Url.PRE_NEWS + Url.SPORTS_ID + page + "-" + (page + 10) + ".html";
+                return generateUrl(Url.SPORTS_ID);
+            case "足球":
+                return generateUrl(Url.FOOTBALL_ID);
+            case "娱乐":
+                return generateUrl(Url.ENTERTAINMENT_ID);
+            case "财经":
+                return generateUrl(Url.FINANCE_ID);
+            case "科技":
+                return generateUrl(Url.TECH_ID);
+            case "电影":
+                return generateUrl(Url.MOVIE_ID);
+            case "汽车":
+                return generateUrl(Url.CAR_ID);
+            case "笑话":
+                return generateUrl(Url.JOKE_ID);
+            case "游戏":
+                return generateUrl(Url.GAME_ID);
+            case "时尚":
+                return generateUrl(Url.FASHION_ID);
+            case "情感":
+                return generateUrl(Url.EMOTION_ID);
+            case "精选":
+                return generateUrl(Url.CHOICE_ID);
+            case "电台":
+                return generateUrl(Url.RADIO_ID);
+            case "NBA":
+                return generateUrl(Url.NBA_ID);
+            case "数码":
+                return generateUrl(Url.DIGITAL_ID);
+            case "移动":
+                return generateUrl(Url.MOBILE_ID);
+            case "彩票":
+                return generateUrl(Url.LOTTERY_ID);
+            case "教育":
+                return generateUrl(Url.EDUCATION_ID);
+            case "论坛":
+                return generateUrl(Url.FORUM_ID);
+            case "旅游":
+                return generateUrl(Url.TOUR_ID);
+            case "手机":
+                return generateUrl(Url.PHONE_ID);
+            case "博客":
+                return generateUrl(Url.BLOG_ID);
+            case "社会":
+                return generateUrl(Url.SOCIETY_ID);
+            case "家居":
+                return generateUrl(Url.FURNISHING_ID);
+            case "暴雪游戏":
+                return generateUrl(Url.BLIZZARD_ID);
+            case "亲子":
+                return generateUrl(Url.PATERNITY_ID);
+            case "CBA":
+                return generateUrl(Url.CBA_ID);
+            case "消息":
+                return generateUrl(Url.MSG_ID);
+            case "军事":
+                return generateUrl(Url.MILITARY_ID);
         }
         return "";
+    }
+
+    @NonNull
+    private String generateUrl(String id) {
+        return Url.PRE_NEWS + id + page + "-" + (page + 10) + ".html";
     }
 
     @Override
@@ -195,7 +256,10 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                     final NewsModel newsModel = nmList.get(0);
                     List<Ads> ads = newsModel.ads;
                     Ads ad = ads.get(position);
-                    toImageNewsActivity(ad.url, ad.title);
+                    if (ad.url.contains("|"))
+                        toImageNewsActivity(ad.url, ad.title);
+                    else
+                        toWebNewsActivity(ad.url);
                 }
             });
         }
@@ -213,7 +277,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                     if (adapter.getItemCount() < 360) {
                         adapter.changeLoadStatus(NewsDetailAdapter.LOADING);
                         page += 10;
-                        LogUtils.e("NewsDetailPresenter", getUrl(mHint));
                         mPresenter.loadMoreData(getUrl(mHint), mHint);
                     } else {
                         adapter.changeLoadStatus(NewsDetailAdapter.NO_MORE_DATA);
@@ -249,14 +312,21 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         // TODO
         NewsModel nm = nmList.get(position);
         if (nm.imgextra != null && !nm.imgextra.isEmpty()) {
-            // 如果是图片新闻，则跳转到图片新闻详情
-            toImageNewsActivity(nm.photosetID, nm.title);
+            if (nm.photosetID != null && !nm.photosetID.equals(""))
+                // 如果是图片新闻，则跳转到图片新闻详情
+                toImageNewsActivity(nm.photosetID, nm.title);
+            else
+                toWebNewsActivity(nm.docid);
         } else {
             // 如果是网页新闻，则用WebView加载网页
-            Intent intent = new Intent(getActivity(), WebNewsActivity.class);
-            intent.putExtra("url", Url.TOUCH_HEAD + nm.docid + Url.TOUCH_END);
-            startActivity(intent);
+            toWebNewsActivity(nm.docid);
         }
+    }
+
+    private void toWebNewsActivity(String docid) {
+        Intent intent = new Intent(getActivity(), WebNewsActivity.class);
+        intent.putExtra("url", Url.TOUCH_HEAD + docid + Url.TOUCH_END);
+        startActivity(intent);
     }
 
     @Override

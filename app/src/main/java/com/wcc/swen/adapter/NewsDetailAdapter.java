@@ -50,7 +50,8 @@ public class NewsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemViewType(int position) {
         if (headerView == null) {
-            NewsModel currNM = mList.get(position - 1);
+            if (position + 1 == getItemCount()) return FOOTER;
+            NewsModel currNM = mList.get(position);
             if (currNM.imgextra == null || currNM.imgextra.size() == 0)
                 return NORMAL;
             return MULTIIMAGE;

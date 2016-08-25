@@ -32,7 +32,7 @@ public class NewsFragment extends Fragment {
         vp.setAdapter(new NewsAdapter(getChildFragmentManager(), getActivity()));
         vp.setOffscreenPageLimit(1);
         tab.setupWithViewPager(vp);
-        tab.setTabMode(TabLayout.MODE_FIXED);
+        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         return view;
     }
