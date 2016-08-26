@@ -7,9 +7,12 @@
     <ImageView
         android:id="@+id/iv_item_news_detail_rv"
         android:layout_width="120dp"
-        android:layout_height="110dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="10dp"
-        android:src="@mipmap/i1" />
+        android:background="@mipmap/loading"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:scaleType="fitXY" />
 
     <RelativeLayout
         android:layout_width="0dp"

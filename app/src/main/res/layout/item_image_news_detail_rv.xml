@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="100dp">
 
         <ImageView
             android:id="@+id/iv_left_item_image"
@@ -23,7 +23,10 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:src="@mipmap/i1" />
+            android:background="@mipmap/loading"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitXY" />
 
         <ImageView
             android:id="@+id/iv_center_item_image"
@@ -32,7 +35,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@mipmap/i1" />
+            android:background="@mipmap/loading"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitXY" />
 
         <ImageView
             android:id="@+id/iv_right_item_image"
@@ -40,7 +46,10 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:src="@mipmap/i1" />
+            android:background="@mipmap/loading"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:scaleType="fitXY" />
     </LinearLayout>
 
     <LinearLayout

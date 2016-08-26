@@ -4,11 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab"
-        style="@style/MyCustomTabLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="40dp">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
+            style="@style/MyCustomTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_tab_select"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/zhang" />
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_news_main"

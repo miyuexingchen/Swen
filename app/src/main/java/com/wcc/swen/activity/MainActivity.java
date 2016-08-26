@@ -1,6 +1,7 @@
 package com.wcc.swen.activity;
 
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private LinearLayout ll_drawer;
     private FragmentManager fragmentManager;
     private long firstPressTime = 0;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         // 主页面默认添加NewsFragment
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.ll_content, new NewsFragment()).commit();
+        currentFragment = new NewsFragment();
+        fragmentManager.beginTransaction().add(R.id.ll_content, currentFragment).commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,23 +100,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         switch (fragmentId)
         {
             case 0:
-                fragmentTransaction.replace(R.id.ll_content, new NewsFragment());
+                currentFragment = new NewsFragment();
                 toolbar.setTitle("新闻资讯");
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.ll_content, new VideoFragment());
+                currentFragment = new VideoFragment();
                 toolbar.setTitle("视频");
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.ll_content, new WeatherFragment());
+                currentFragment = new WeatherFragment();
                 toolbar.setTitle("天气");
                 break;
         }
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.ll_content, currentFragment).commit();
     }
 
     @Override
     public void onBackPressed() {
+        if (currentFragmentId == 0 && ((NewsFragment) currentFragment).getIsPopupWindowShowing()) {
+            ((NewsFragment) currentFragment).onBackPressed();
+            return;
+        }
 
         if (mDrawerLayout.isDrawerOpen(ll_drawer)) {
             mDrawerLayout.closeDrawer(ll_drawer);
@@ -131,35 +138,4 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             System.exit(0);
         }
     }
-
-    /*@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            exit();
-        }
-        return false;
-    }
-
-    private boolean isExit = false;
-
-    private void exit()
-    {
-        Timer timer = null;
-        if(!isExit)
-        {
-            isExit = true;
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    isExit = false;
-                }
-            }, 2000);
-        }else{
-            finish();
-            System.exit(0);
-        }
-    }*/
 }

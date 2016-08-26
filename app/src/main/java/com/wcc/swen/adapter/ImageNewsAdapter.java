@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.wcc.swen.R;
 import com.wcc.swen.model.Photo;
 
 import java.util.ArrayList;
