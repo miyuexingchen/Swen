@@ -188,7 +188,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_news_detail, container, false);
         pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
         btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);

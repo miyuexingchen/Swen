@@ -47,6 +47,10 @@ public class NewsAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+    }
+
+    @Override
     public Fragment getItem(int position) {
         return NewsDetailFragment.newInstance(tabs.get(position));
     }

@@ -55,6 +55,8 @@ public class ImageNewsAdapter extends PagerAdapter {
         } else {
             view = list.remove(0);
         }
+
+        view.setBackgroundResource(R.mipmap.loading);
         Glide.with(mContext).load(mList.get(position).imgurl).into(view);
         container.addView(view);
         return view;

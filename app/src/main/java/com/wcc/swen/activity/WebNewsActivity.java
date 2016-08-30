@@ -1,6 +1,5 @@
 package com.wcc.swen.activity;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -51,7 +49,6 @@ public class WebNewsActivity extends AppCompatActivity {
         });
 
         String url = getIntent().getStringExtra("url");
-        LogUtils.e("NewsDetailPresenter", url);
         wv_web_news = (WebView) findViewById(R.id.wv_web_news);
 
         wv_web_news.getSettings().setDomStorageEnabled(true);

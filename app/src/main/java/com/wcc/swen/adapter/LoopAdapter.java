@@ -36,7 +36,7 @@ public class LoopAdapter extends LoopPagerAdapter {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_rollpagerveiw, container, false);
         final ImageView imageView = (ImageView) view.findViewById(R.id.iv_rpv);
-//        imageView.setImageResource(imgs[position]);
+        imageView.setBackgroundResource(R.mipmap.loading);
         Glide.with(container.getContext()).load(adsList.get(position).imgsrc).into(imageView);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

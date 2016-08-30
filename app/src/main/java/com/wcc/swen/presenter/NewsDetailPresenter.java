@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.model.NewsWrapper;
-import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.NetUtils;
 import com.wcc.swen.utils.OkHttpUtils;
 import com.wcc.swen.utils.ToastUtils;

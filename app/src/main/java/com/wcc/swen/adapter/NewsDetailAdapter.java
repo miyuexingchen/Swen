@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.wcc.swen.R;
 import com.wcc.swen.model.NewsModel;
-import com.wcc.swen.utils.LogUtils;
-import com.wcc.swen.view.NewsDetailFragment;
 
 import java.util.List;
 
