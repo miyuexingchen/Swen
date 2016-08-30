@@ -10,6 +10,7 @@
         android:background="@android:color/white">
 
         <TextView
+            android:id="@+id/tv_popup"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -24,11 +25,23 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/shou" />
+
     </LinearLayout>
 
-    <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/tip"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_popup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"></LinearLayout>
+        android:background="@android:color/white"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="8dp" />
 
 </LinearLayout>

@@ -97,6 +97,10 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         return fragment;
     }
 
+    public void resetFragmentData(String hint) {
+        this.mHint = hint;
+    }
+
     @NonNull
     private String getUrl(String hint) {
         switch (hint) {

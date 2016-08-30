@@ -5,4 +5,7 @@
     <color name="colorPrimaryDark">#EC371B</color>
     <color name="colorAccent">#FF4081</color>
     <color name="light_red">#33ff0000</color>
+    <color name="tip">#9c9c9c</color>
+    <color name="bg_focus">#DDDDDD</color>
+    <color name="red_500">#ef4836</color>
 </resources>
