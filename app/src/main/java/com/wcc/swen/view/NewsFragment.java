@@ -49,6 +49,13 @@ public class NewsFragment extends Fragment {
     private NewsAdapter vpAdapter;
     private RecyclerView rv_pop;
 
+    private String listToString(List<String> list) {
+        String str = "";
+        for (String s : list)
+            str += s + "-";
+        return str;
+    }
+
     private String tabsToString() {
         String s = "";
         for (String str : tabs)
@@ -171,13 +178,6 @@ public class NewsFragment extends Fragment {
                 refreshUI();
             }
         }
-    }
-
-    private String listToString(List<String> list) {
-        String str = "";
-        for (String s : list)
-            str += s + "-";
-        return str;
     }
 
     private void refreshUI() {

@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/weather"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_today_wd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:text="32°"
+        android:textColor="@android:color/white"
+        android:textSize="52sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_today_tq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:text="北京|多云"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_fxfs"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:gravity="center"
+        android:text="西风2级"
+        android:textColor="@android:color/white"
+        android:textSize="34sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_tq"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="weather"
-        android:gravity="center"
-        android:textSize="29sp"
-        />
+        android:paddingLeft="30dp" />
 
 </LinearLayout>
