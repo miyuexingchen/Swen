@@ -53,6 +53,12 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
             return;
         }
 
+        int connectedType = NetUtils.getConnectedType((Activity) mView);
+        if (connectedType == 0) {
+            ToastUtils.show("当前网络为移动网络，请到wifi环境下重试。", ((Activity) mView));
+            mView.retry();
+            return;
+        }
         new Thread() {
             @Override
             public void run() {

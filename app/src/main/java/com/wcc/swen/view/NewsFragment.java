@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class NewsFragment extends Fragment {
 
-    final String tag = "NewsFragment";
     private String[] tabs = {"头条", "体育", "娱乐", "财经", "科技", "电影", "汽车", "笑话", "游戏", "足球"
             , "时尚", "情感", "精选", "电台"
             , "NBA", "数码", "移动", "彩票"

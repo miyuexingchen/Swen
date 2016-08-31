@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 
 import com.google.gson.Gson;
 import com.wcc.swen.contract.WeatherContract;
@@ -51,6 +52,12 @@ public class WeatherPresenter implements WeatherContract.Presenter {
         boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((WeatherFragment) mView).getContext());
         if (!isNetWorkAccessed) {
             ToastUtils.show("网络不可用，请检查网络后再试。", ((WeatherFragment) mView).getContext());
+            return;
+        }
+
+        int connectedType = NetUtils.getConnectedType(((Fragment) mView).getActivity());
+        if (connectedType == 0) {
+            ToastUtils.show("当前网络为移动网络，请到wifi环境下重试。", (((Fragment) mView).getActivity()));
             return;
         }
 

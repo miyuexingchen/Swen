@@ -1,5 +1,6 @@
 package com.wcc.swen.presenter;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -59,6 +60,13 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
         boolean isNetWorkConnected = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkConnected) {
             ToastUtils.show("网络不可用，请检查网络后再试。", (((Fragment) mView).getActivity()));
+            mView.retry();
+            return;
+        }
+
+        int connectedType = NetUtils.getConnectedType(((Fragment) mView).getActivity());
+        if (connectedType == 0) {
+            ToastUtils.show("当前网络为移动网络，请到wifi环境下重试。", (((Fragment) mView).getActivity()));
             mView.retry();
             return;
         }
@@ -220,6 +228,13 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
             return;
         }
 
+        int connectedType = NetUtils.getConnectedType(((Fragment) mView).getActivity());
+        if (connectedType == 0) {
+            ToastUtils.show("当前网络为移动网络，请到wifi环境下重试。", (((Fragment) mView).getActivity()));
+            mView.retry();
+            return;
+        }
+
         new Thread() {
             @Override
             public void run() {
@@ -241,6 +256,13 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
         boolean isNetWorkAccessed = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkAccessed) {
             ToastUtils.show("网络不可用，请检查网络后再试。", (((Fragment) mView).getActivity()));
+            return;
+        }
+
+        int connectedType = NetUtils.getConnectedType(((Fragment) mView).getActivity());
+        if (connectedType == 0) {
+            ToastUtils.show("当前网络为移动网络，请到wifi环境下重试。", (((Fragment) mView).getActivity()));
+            mView.retry();
             return;
         }
 
