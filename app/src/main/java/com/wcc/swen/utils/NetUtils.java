@@ -3,7 +3,6 @@ package com.wcc.swen.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.SystemClock;
 
 /**
  * Created by WangChenchen on 2016/8/22.

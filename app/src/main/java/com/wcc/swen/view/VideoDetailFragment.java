@@ -35,7 +35,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 /**
  * Created by WangChenchen on 2016/8/31.
  */
-public class VideoDetailFragment extends Fragment implements VideoDetailAdapter.OnItemClickListener, NewsDetailContract.View<VideoWrapper.VideoModel> {
+public class VideoDetailFragment extends Fragment implements NewsDetailContract.View<VideoWrapper.VideoModel> {
 
     public final int ON_REFRESH_SUCCESS = 0;
     public final int ON_REFRESH_FAILURE = 1;
@@ -192,7 +192,6 @@ public class VideoDetailFragment extends Fragment implements VideoDetailAdapter.
         rv_video_detail.setItemAnimator(new DefaultItemAnimator());
 
         adapter = new VideoDetailAdapter(getActivity(), vmList);
-        adapter.setOnItemClickListener(this);
         rv_video_detail.setAdapter(adapter);
 
         // 监听RecyclerView滑动状态，如果滑动到最后，实现上拉刷新
@@ -217,12 +216,6 @@ public class VideoDetailFragment extends Fragment implements VideoDetailAdapter.
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
-    }
-
-    @Override
-    public void onItemClick(int position, Object object) {
-        // TODO
-
     }
 
     @Override

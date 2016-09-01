@@ -18,7 +18,6 @@ import com.wcc.swen.model.Daily;
 import com.wcc.swen.model.Weather;
 import com.wcc.swen.model.WeatherWrapper;
 import com.wcc.swen.presenter.WeatherPresenter;
-import com.wcc.swen.utils.LogUtils;
 
 import java.util.List;
 
@@ -28,7 +27,6 @@ import java.util.List;
 public class WeatherFragment extends Fragment implements WeatherContract.View {
 
     private static final String url = "https://api.thinkpage.cn/v3/weather/daily.json?key=wwl9dtjoxf2ydspl&location=nanjing&language=zh-Hans&unit=c&start=0&days=5";
-    private WeatherPresenter mPresenter;
     private WeatherWrapper mWrapper;
     private TextView wd;
     private TextView tq;
@@ -44,7 +42,7 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
         fxfs = (TextView) view.findViewById(R.id.tv_fxfs);
         rv_tq = (RecyclerView) view.findViewById(R.id.rv_tq);
 
-        mPresenter = new WeatherPresenter(this);
+        WeatherPresenter mPresenter = new WeatherPresenter(this);
         mPresenter.loadData(url);
 
         return view;

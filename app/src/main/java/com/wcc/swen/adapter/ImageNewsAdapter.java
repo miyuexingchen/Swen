@@ -2,8 +2,6 @@ package com.wcc.swen.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -48,7 +46,7 @@ public class ImageNewsAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        ImageView view = null;
+        ImageView view;
         if (list.isEmpty()) {
             view = new ImageView(mContext);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);

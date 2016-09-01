@@ -32,7 +32,7 @@
         android:layout_centerInParent="true"
         android:background="@android:color/white"
         android:gravity="center"
-        android:text="点击重试"
+        android:text="@string/clicktoretry"
         android:textColor="@android:color/darker_gray"
         android:visibility="gone" />
 

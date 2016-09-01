@@ -2,14 +2,12 @@ package com.wcc.swen.contract;
 
 import com.wcc.swen.BasePresenter;
 import com.wcc.swen.BaseView;
-import com.wcc.swen.model.NewsModel;
-
 import java.util.List;
 
 /**
  * Created by WangChenchen on 2016/8/19.
  */
-public interface NewsDetailContract<T> {
+public interface NewsDetailContract {
 
     interface View<T> extends BaseView {
 

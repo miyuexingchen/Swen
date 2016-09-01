@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.wcc.swen.R;
 import com.wcc.swen.model.VideoWrapper;
-import com.wcc.swen.model.VideoWrapper.VideoModel;
-
 import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -31,7 +28,6 @@ public class VideoDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context mContext;
     // 将RollPagerView作为HeaderView添加给RecyclerView
     private List<VideoWrapper.VideoModel> mList;
-    private OnItemClickListener listener;
 
     public VideoDetailAdapter(Context context, List<VideoWrapper.VideoModel> list) {
         mContext = context;
@@ -87,16 +83,6 @@ public class VideoDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if (setUp)
                 Glide.with(mContext).load(currVM.cover).into(normalHolder.jcvps.thumbImageView);
         }
-
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.onItemClick(position, mList.get(position));
-                }
-            }
-        });
     }
 
     // 用新数据替换mList内容
@@ -122,17 +108,9 @@ public class VideoDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
     @Override
     public int getItemCount() {
         return mList.size() + 1;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(int position, Object object);
     }
 
     public class ViewHolderNormal extends RecyclerView.ViewHolder {

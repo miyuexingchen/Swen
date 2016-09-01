@@ -1,6 +1,5 @@
 package com.wcc.swen.presenter;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -22,8 +21,6 @@ import java.util.List;
  * Created by WangChenchen on 2016/8/19.
  */
 public class NewsDetailPresenter implements NewsDetailContract.Presenter {
-
-    private final String tag = "NewsDetailPresenter";
 
     private final int ON_SUCCESS = 0;
     private final int ON_FAILURE = 1;
@@ -48,11 +45,6 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
 
     public NewsDetailPresenter(NewsDetailContract.View view) {
         mView = view;
-    }
-
-    @Override
-    public void start() {
-
     }
 
     @Override
@@ -84,6 +76,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
                         mHandler.sendEmptyMessage(ON_FAILURE);
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }.start();

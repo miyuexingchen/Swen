@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="30dp"
-            android:text="切换栏目"
+            android:text="@string/switchchannel"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp" />
 

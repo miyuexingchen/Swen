@@ -30,7 +30,6 @@ import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.Ads;
 import com.wcc.swen.model.NewsModel;
 import com.wcc.swen.presenter.NewsDetailPresenter;
-import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.ToastUtils;
 import com.wcc.swen.utils.Url;
 
@@ -252,7 +251,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         if (nmList.get(0).ads != null && nmList.get(0).ads.size() > 0) {
             // 实现轮播效果
             setHeader(rv_news_detail);
-            rollPagerView.setAdapter(new LoopAdapter(rollPagerView, nmList.get(0)));
+            rollPagerView.setAdapter(new LoopAdapter(rollPagerView, nmList.get(0).ads));
             rollPagerView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
@@ -297,11 +296,9 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     // 添加参数跳转到图片新闻详情
     private void toImageNewsActivity(String u, String t) {
-        String url = u;
-        String title = t;
         Intent intent = new Intent(getActivity(), ImageNewsActivity.class);
-        intent.putExtra("url", url);
-        intent.putExtra("title", title);
+        intent.putExtra("url", u);
+        intent.putExtra("title", t);
         startActivity(intent);
     }
 
@@ -312,7 +309,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
 
     @Override
     public void onItemClick(int position, Object object) {
-        // TODO
         NewsModel nm = nmList.get(position);
         if (nm.imgextra != null && !nm.imgextra.isEmpty()) {
             if (nm.photosetID != null && !nm.photosetID.equals(""))

@@ -26,13 +26,10 @@ import java.util.List;
  */
 public class ImageNewsActivity extends AppCompatActivity implements NewsDetailContract.View<Photo> {
 
-    private static final String tag = "ImageNewsActivity";
-
     private ImageNewsPresenter mPresenter;
     private String url;
     private String title;
     private List<Photo> list;
-    private Toolbar toolbar;
     private TextView tv_title_image_news;
     private TextView tv_page_image_news;
     private TextView tv_image_news;
@@ -67,7 +64,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
             getWindow().setStatusBarColor(Color.BLACK);   //这里动态修改颜色
         }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Color.BLACK);

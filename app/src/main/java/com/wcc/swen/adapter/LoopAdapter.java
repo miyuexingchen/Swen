@@ -1,6 +1,5 @@
 package com.wcc.swen.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.wcc.swen.R;
 import com.wcc.swen.model.Ads;
-import com.wcc.swen.model.NewsModel;
 
 import java.util.List;
 
@@ -22,13 +20,11 @@ import java.util.List;
  */
 public class LoopAdapter extends LoopPagerAdapter {
 
-    private NewsModel nm;
     private List<Ads> adsList;
 
-    public LoopAdapter(RollPagerView viewPager, NewsModel nm) {
+    public LoopAdapter(RollPagerView viewPager, List<Ads> list) {
         super(viewPager);
-        this.nm = nm;
-        adsList = nm.ads;
+        adsList = list;
     }
 
     @Override

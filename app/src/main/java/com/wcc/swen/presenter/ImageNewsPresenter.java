@@ -86,8 +86,4 @@ public class ImageNewsPresenter implements NewsDetailContract.Presenter {
 
     }
 
-    @Override
-    public void start() {
-
-    }
 }

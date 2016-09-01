@@ -5,6 +5,6 @@
     android:layout_height="90dp"
     android:gravity="center"
     android:padding="10dp"
-    android:text="上拉刷新..."
+    android:text="@string/pushtorefresh"
     android:textColor="@android:color/darker_gray"
     android:textSize="18sp" />

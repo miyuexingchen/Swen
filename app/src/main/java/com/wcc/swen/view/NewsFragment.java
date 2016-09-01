@@ -94,7 +94,7 @@ public class NewsFragment extends Fragment {
         // 实现tab效果
         tab = (TabLayout) view.findViewById(R.id.tab);
         vp = (ViewPager) view.findViewById(R.id.vp_news_main);
-        vpAdapter = new NewsAdapter(getChildFragmentManager(), getActivity(), myChannels);
+        vpAdapter = new NewsAdapter(getChildFragmentManager(), myChannels);
         vp.setAdapter(vpAdapter);
         vp.setOffscreenPageLimit(1);
         tab.setupWithViewPager(vp);
@@ -108,7 +108,6 @@ public class NewsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 View popView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_popupwindow_selecttab, null);
-                View parent = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_news, null);
 
                 rv_pop = (RecyclerView) popView.findViewById(R.id.rv_popup);
                 GridLayoutManager manager = new GridLayoutManager(getActivity(), 4);

@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:padding="10dp"
-        android:text="标题"
         android:textColor="@android:color/black"
         android:textSize="17sp" />
 
@@ -61,7 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:paddingLeft="10dp"
-            android:text="要闻"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp" />
 
@@ -71,7 +69,6 @@
             android:layout_height="30dp"
             android:gravity="right"
             android:paddingRight="10dp"
-            android:text="跟帖"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp" />
     </LinearLayout>

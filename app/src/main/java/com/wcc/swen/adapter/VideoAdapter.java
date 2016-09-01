@@ -1,12 +1,9 @@
 package com.wcc.swen.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
-
-import com.wcc.swen.view.NewsDetailFragment;
 import com.wcc.swen.view.VideoDetailFragment;
 
 import java.util.List;
@@ -17,17 +14,10 @@ import java.util.List;
  */
 public class VideoAdapter extends FragmentPagerAdapter {
 
-    private Context mContext;
-
     private List<String> tabs;
 
-    public VideoAdapter(FragmentManager fm, Context context, List<String> tabs) {
+    public VideoAdapter(FragmentManager fm, List<String> tabs) {
         super(fm);
-        mContext = context;
-        this.tabs = tabs;
-    }
-
-    public void setTabs(List<String> tabs) {
         this.tabs = tabs;
     }
 

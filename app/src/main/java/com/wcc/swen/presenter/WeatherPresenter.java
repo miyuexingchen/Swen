@@ -1,6 +1,5 @@
 package com.wcc.swen.presenter;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -30,7 +29,6 @@ public class WeatherPresenter implements WeatherContract.Presenter {
                     mView.refreshUI();
                     break;
                 case ON_FAILURE:
-                    // TODO
                     break;
                 default:
                     super.handleMessage(msg);
@@ -40,11 +38,6 @@ public class WeatherPresenter implements WeatherContract.Presenter {
 
     public WeatherPresenter(WeatherContract.View view) {
         mView = view;
-    }
-
-    @Override
-    public void start() {
-
     }
 
     @Override

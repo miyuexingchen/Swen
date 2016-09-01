@@ -1,6 +1,5 @@
 package com.wcc.swen.presenter;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,8 +7,6 @@ import android.support.v4.app.Fragment;
 
 import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
-import com.wcc.swen.model.VideoWrapper.VideoModel;
-import com.wcc.swen.model.NewsWrapper;
 import com.wcc.swen.model.VideoWrapper;
 import com.wcc.swen.utils.NetUtils;
 import com.wcc.swen.utils.OkHttpUtils;
@@ -50,11 +47,6 @@ public class VideoDetailPresenter implements NewsDetailContract.Presenter {
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
     public void loadData(final String url, final String tab) {
         boolean isNetWorkConnected = NetUtils.isNetworkConnected(((Fragment) mView).getActivity());
         if (!isNetWorkConnected) {
@@ -82,6 +74,7 @@ public class VideoDetailPresenter implements NewsDetailContract.Presenter {
                         mHandler.sendEmptyMessage(ON_FAILURE);
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }.start();

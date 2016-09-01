@@ -18,7 +18,6 @@
         android:layout_marginTop="140dp"
         android:paddingBottom="5dp"
         android:paddingLeft="30dp"
-        android:text="奥田爱华"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 

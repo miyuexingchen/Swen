@@ -11,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.wcc.swen.R;
-import com.wcc.swen.utils.LogUtils;
 
 public class WebNewsActivity extends AppCompatActivity {
 

@@ -29,7 +29,6 @@
             android:lines="2"
             android:paddingLeft="5dp"
             android:paddingTop="10dp"
-            android:text="Snapshots of the development version are available in Sonatype's snapshots repository."
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -40,7 +39,6 @@
             android:layout_below="@+id/tv_title_news_detail"
             android:layout_marginLeft="3dp"
             android:paddingLeft="5dp"
-            android:text="New Text"
             android:textColor="@android:color/darker_gray"
             android:textSize="15sp" />
 
@@ -53,7 +51,6 @@
             android:layout_toRightOf="@+id/tv_author_news_detail"
             android:gravity="right"
             android:paddingLeft="5dp"
-            android:text="New Text"
             android:textColor="@android:color/darker_gray"
             android:textSize="15sp" />
     </RelativeLayout>

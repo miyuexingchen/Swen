@@ -38,34 +38,35 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public void onBindViewHolder(WeatherAdapter.ViewHolder holder, int position) {
         Daily daily = mDaily.get(position);
         holder.tv_day.setText(daily.date);
-        holder.tv_weather.setText(daily.text_day);
+        String weather = daily.text_day;
+        holder.tv_weather.setText(weather);
         holder.tv_weather_wd.setText(daily.high + "°/" + daily.low + "°");
         int id = R.mipmap.halu;
-        if (daily.text_day.contains("多云"))
+        if (weather.contains("多云"))
             id = R.mipmap.cloud;
-        else if (daily.text_day.equals("阴"))
+        else if (weather.equals("阴"))
             id = R.mipmap.yintian;
-        else if (daily.text_day.contains("阵雨"))
+        else if (weather.contains("阵雨"))
             id = R.mipmap.thunder;
-        else if (daily.text_day.equals("小雨")
-                || daily.text_day.equals("中雨")
-                || daily.text_day.equals("大雨")
-                || daily.text_day.equals("冻雨")
-                || daily.text_day.equals("雨夹雪"))
+        else if (weather.equals("小雨")
+                || weather.equals("中雨")
+                || weather.equals("大雨")
+                || weather.equals("冻雨")
+                || weather.equals("雨夹雪"))
             id = R.mipmap.rain;
-        else if (daily.text_day.contains("暴雨"))
+        else if (weather.contains("暴雨"))
             id = R.mipmap.stormrain;
-        else if (daily.text_day.contains("雪"))
+        else if (weather.contains("雪"))
             id = R.mipmap.snow;
-        else if (daily.text_day.contains("尘") || daily.text_day.equals("扬沙"))
+        else if (weather.contains("尘") || weather.equals("扬沙"))
             id = R.mipmap.sand;
-        else if (daily.text_day.equals("雾") || daily.text_day.equals("霾"))
+        else if (weather.equals("雾") || weather.equals("霾"))
             id = R.mipmap.frog;
-        else if (daily.text_day.equals("风") || daily.text_day.equals("大风"))
+        else if (weather.equals("风") || weather.equals("大风"))
             id = R.mipmap.wind;
-        else if (daily.text_day.equals("飓风") || daily.text_day.equals("热带风暴") || daily.text_day.equals("龙卷风"))
+        else if (weather.equals("飓风") || weather.equals("热带风暴") || weather.equals("龙卷风"))
             id = R.mipmap.storm;
-        else if (daily.text_day.equals("未知"))
+        else if (weather.equals("未知"))
             id = R.mipmap.mistery;
 
         Glide.with(mContext).load(id).into(holder.iv_weather);

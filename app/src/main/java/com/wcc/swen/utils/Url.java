@@ -100,7 +100,6 @@ public class Url {
      */
     public static final String Video = "nc/video/list/";
     public static final String VIDEO_CENTER = "/n/";
-    public static final String VIDEO_END_URL = "-10.html";
     // 热点视频
     public static final String VIDEO_HOT_ID = "V9LG4B3A0";
     // 娱乐视频

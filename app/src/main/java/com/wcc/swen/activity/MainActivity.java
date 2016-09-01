@@ -11,26 +11,27 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.wcc.swen.R;
+import com.wcc.swen.adapter.DrawerListAdapter;
 import com.wcc.swen.contract.MainContract;
+import com.wcc.swen.model.ItemModelOfDrawerList;
 import com.wcc.swen.presenter.MainPresenter;
 import com.wcc.swen.view.NewsFragment;
 import com.wcc.swen.view.VideoFragment;
 import com.wcc.swen.view.WeatherFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MainContract.View{
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
-    private ListView lv_drawer;
-    private String[] items = {"新闻","视频","天气"};
-    private ArrayAdapter mAdapter;
+    private List<ItemModelOfDrawerList> items = new ArrayList<>();
     private MainPresenter mPresenter;
     private int currentFragmentId = 0;
     // 用于关闭Drawer
@@ -71,8 +72,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        lv_drawer = (ListView) findViewById(R.id.lv_drawer);
-        mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items);
+        ListView lv_drawer = (ListView) findViewById(R.id.lv_drawer);
+
+        items.add(new ItemModelOfDrawerList(R.mipmap.news_icon, "新闻"));
+        items.add(new ItemModelOfDrawerList(R.mipmap.video_icon, "视频"));
+        items.add(new ItemModelOfDrawerList(R.mipmap.weather_icon, "天气"));
+
+        DrawerListAdapter mAdapter = new DrawerListAdapter(this, items);
         lv_drawer.setAdapter(mAdapter);
 
         ll_drawer = (LinearLayout) findViewById(R.id.ll_drawer);
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
 
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        ActionBarDrawerToggle mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
 
         mToggle.syncState();
         mDrawerLayout.addDrawerListener(mToggle);

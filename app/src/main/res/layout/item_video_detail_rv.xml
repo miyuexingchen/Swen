@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="来源：网易新闻"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
@@ -29,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="时长：2:10"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
@@ -38,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="点击：200次"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 

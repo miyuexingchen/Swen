@@ -11,4 +11,7 @@
     <string name="other_channel">其他频道</string>
     <string name="edit">编辑</string>
     <string name="finish">完成</string>
+    <string name="clicktoretry">点击重试</string>
+    <string name="pushtorefresh">上拉刷新...</string>
+    <string name="switchchannel">切换栏目</string>
 </resources>

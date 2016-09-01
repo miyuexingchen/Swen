@@ -6,7 +6,6 @@ package com.wcc.swen.model;
 public class Ads {
 
     public String title;
-    public String tag;
     public String imgsrc;
     public String subtitle;
     public String url;
