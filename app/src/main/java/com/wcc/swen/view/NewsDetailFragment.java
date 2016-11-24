@@ -220,7 +220,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
             public void onClick(View v) {
                 pb.setVisibility(View.VISIBLE);
                 btn_hint_retry.setVisibility(View.GONE);
-                mPresenter.loadData(getUrl(mHint), mHint);
+                new Handler().postDelayed(() -> mPresenter.loadData(getUrl(mHint), mHint), 1000);
             }
         });
     }

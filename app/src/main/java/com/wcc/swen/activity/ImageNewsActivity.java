@@ -3,6 +3,7 @@ package com.wcc.swen.activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -137,7 +138,7 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
             public void onClick(View v) {
                 pb_image_news.setVisibility(View.VISIBLE);
                 btn_image_news.setVisibility(View.GONE);
-                mPresenter.loadData(url, "");
+                new Handler().postDelayed(() -> mPresenter.loadData(url, ""), 1000);
             }
         });
     }

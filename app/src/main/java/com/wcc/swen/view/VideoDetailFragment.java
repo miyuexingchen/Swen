@@ -151,13 +151,11 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
         pb.setVisibility(View.GONE);
         // 显示重试按钮
         btn_video_retry.setVisibility(View.VISIBLE);
-        btn_video_retry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pb.setVisibility(View.VISIBLE);
-                btn_video_retry.setVisibility(View.GONE);
-                mPresenter.loadData(getUrl(mHint), mHint);
-            }
+        btn_video_retry.setOnClickListener(v -> {
+            pb.setVisibility(View.VISIBLE);
+            btn_video_retry.setVisibility(View.GONE);
+            new Handler().postDelayed(() -> mPresenter.loadData(getUrl(mHint), mHint), 1000);
+
         });
     }
 

@@ -154,9 +154,10 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (currentFragmentId == 0) {
             NewsFragment news = (NewsFragment) fragmentManager.findFragmentByTag("news");
-            if(news.getIsPopupWindowShowing())
+            if(news.getIsPopupWindowShowing()) {
                 news.onBackPressed();
-            return;
+                return;
+            }
         }
 
         if (mDrawerLayout.isDrawerOpen(ll_drawer)) {
