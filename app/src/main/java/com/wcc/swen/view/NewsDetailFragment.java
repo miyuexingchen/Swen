@@ -328,8 +328,4 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         startActivity(intent);
     }
 
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
 }

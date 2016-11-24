@@ -17,9 +17,7 @@ import android.widget.Toast;
 
 import com.wcc.swen.R;
 import com.wcc.swen.adapter.DrawerListAdapter;
-import com.wcc.swen.contract.MainContract;
 import com.wcc.swen.model.ItemModelOfDrawerList;
-import com.wcc.swen.presenter.MainPresenter;
 import com.wcc.swen.view.NewsFragment;
 import com.wcc.swen.view.VideoFragment;
 import com.wcc.swen.view.WeatherFragment;
@@ -27,18 +25,20 @@ import com.wcc.swen.view.WeatherFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View{
+public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private List<ItemModelOfDrawerList> items = new ArrayList<>();
-    private MainPresenter mPresenter;
     private int currentFragmentId = 0;
     // 用于关闭Drawer
     private LinearLayout ll_drawer;
     private FragmentManager fragmentManager;
     private long firstPressTime = 0;
     private Fragment currentFragment;
+    private Fragment videoFragment;
+    private Fragment weatherFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +46,41 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
 
         // 初始化view
-        initView();
+        initView(savedInstanceState);
     }
 
-    private void initView()
+    private void initView(Bundle savedInstanceState)
     {
-        mPresenter = new MainPresenter(this);
 
         // 主页面默认添加NewsFragment
         fragmentManager = getSupportFragmentManager();
-        currentFragment = new NewsFragment();
-        fragmentManager.beginTransaction().add(R.id.ll_content, currentFragment).commit();
+
+        /**
+         * 防止碎片重叠
+         */
+        if(savedInstanceState != null)
+        {
+            currentFragment = fragmentManager.findFragmentByTag("news");
+            videoFragment = fragmentManager.findFragmentByTag("video");
+            weatherFragment = fragmentManager.findFragmentByTag("weather");
+            fragmentManager.beginTransaction().show(currentFragment)
+                    .hide(videoFragment)
+                    .hide(weatherFragment)
+                    .commit();
+
+        }else
+        {
+            currentFragment = new NewsFragment();
+            videoFragment = new VideoFragment();
+            weatherFragment = new WeatherFragment();
+            fragmentManager.beginTransaction().add(R.id.ll_content, currentFragment, "news")
+                    .add(R.id.ll_content, videoFragment, "video")
+                    .add(R.id.ll_content, weatherFragment, "weather")
+                    .show(currentFragment)
+                    .hide(videoFragment)
+                    .hide(weatherFragment)
+                    .commit();
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         lv_drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        mPresenter.switchFragment(position);
+                        switchFragment(position);
             }
         });
 
@@ -96,29 +120,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     // 根据所点列表项的下标，切换fragment
-    @Override
     public void switchFragment(int fragmentId) {
         mDrawerLayout.closeDrawer(ll_drawer);
         if(currentFragmentId == fragmentId)
             return;
         currentFragmentId = fragmentId;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment toFragment = null;
         switch (fragmentId)
         {
             case 0:
-                currentFragment = new NewsFragment();
+                toFragment = fragmentManager.findFragmentByTag("news");
                 toolbar.setTitle("新闻资讯");
                 break;
             case 1:
-                currentFragment = new VideoFragment();
+                toFragment = fragmentManager.findFragmentByTag("video");
                 toolbar.setTitle("视频");
                 break;
             case 2:
-                currentFragment = new WeatherFragment();
+                toFragment = fragmentManager.findFragmentByTag("weather");
                 toolbar.setTitle("天气");
                 break;
         }
-        fragmentTransaction.replace(R.id.ll_content, currentFragment).commit();
+        fragmentTransaction.hide(currentFragment).show(toFragment).commit();
+        currentFragment = toFragment;
     }
 
     @Override

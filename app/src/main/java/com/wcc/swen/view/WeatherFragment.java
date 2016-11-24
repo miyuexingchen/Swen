@@ -75,9 +75,4 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
             rv_tq.setAdapter(adapter);
         }
     }
-
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
 }

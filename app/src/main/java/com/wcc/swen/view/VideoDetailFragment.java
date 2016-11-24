@@ -218,8 +218,4 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
         });
     }
 
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
 }

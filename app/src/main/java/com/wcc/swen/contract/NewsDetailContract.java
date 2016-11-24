@@ -1,7 +1,5 @@
 package com.wcc.swen.contract;
 
-import com.wcc.swen.BasePresenter;
-import com.wcc.swen.BaseView;
 import java.util.List;
 
 /**
@@ -9,7 +7,7 @@ import java.util.List;
  */
 public interface NewsDetailContract {
 
-    interface View<T> extends BaseView {
+    interface View<T> {
 
         void showView();
 
@@ -18,7 +16,7 @@ public interface NewsDetailContract {
         void setList(List<T> list);
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
         void loadData(String url, String tab);
 
         void loadRefreshData(String url, String tab);

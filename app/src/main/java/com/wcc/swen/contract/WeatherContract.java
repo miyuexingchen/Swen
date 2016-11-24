@@ -1,20 +1,17 @@
 package com.wcc.swen.contract;
 
-import com.wcc.swen.BasePresenter;
-import com.wcc.swen.BaseView;
-
 /**
  * Created by WangChenchen on 2016/8/30.
  */
 public interface WeatherContract {
 
-    interface View extends BaseView {
+    interface View {
         void setWrapper(Object wrapper);
 
         void refreshUI();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter {
         void loadData(String url);
     }
 }

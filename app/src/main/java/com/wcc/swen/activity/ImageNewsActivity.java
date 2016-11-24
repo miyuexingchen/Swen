@@ -144,8 +144,4 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
         this.list = list;
     }
 
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
 }
