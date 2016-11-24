@@ -36,6 +36,9 @@ import com.wcc.swen.utils.Url;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by WangChenchen on 2016/8/18.
  */
@@ -47,15 +50,43 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     public final int ON_LOAD_MORE_FAILURE = 3;
     private String mHint;
     private List<NewsModel> nmList = new ArrayList<>();
+
     private NewsDetailPresenter mPresenter;
     private NewsDetailAdapter adapter;
     private RollPagerView rollPagerView;
-    private Button btn_hint_retry;
-    private ProgressBar pb;
+
+    @BindView(R.id.btn_hint_retry)
+    Button btn_hint_retry;
+    @BindView(R.id.pb_fragment_news_detail)
+    ProgressBar pb;
+    @BindView(R.id.rv_news_detail)
+    RecyclerView rv_news_detail;
     private View view;
+
     // 请求数据起始标识
     private int page = 0;
-    private SwipeRefreshLayout srl_news_detail;
+    @BindView(R.id.srl_news_detail)
+    SwipeRefreshLayout srl_news_detail;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mHint = getArguments().getString("hint");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_news_detail, container, false);
+        ButterKnife.bind(this, view);
+
+
+        // 创建presenter
+        mPresenter = new NewsDetailPresenter(this);
+        mPresenter.loadData(getUrl(mHint), mHint);
+
+        return view;
+    }
+
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -179,27 +210,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mHint = getArguments().getString("hint");
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_news_detail, container, false);
-        pb = (ProgressBar) view.findViewById(R.id.pb_fragment_news_detail);
-        btn_hint_retry = (Button) view.findViewById(R.id.btn_hint_retry);
-
-
-        // 创建presenter
-        mPresenter = new NewsDetailPresenter(this);
-        mPresenter.loadData(getUrl(mHint), mHint);
-
-        return view;
-    }
-
-    @Override
     public void retry() {
         // 隐藏进度条
         pb.setVisibility(View.GONE);
@@ -220,8 +230,6 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         // 隐藏ProgressBar
         pb.setVisibility(View.GONE);
 
-        // 获取SwipeRefreshLayout
-        srl_news_detail = (SwipeRefreshLayout) view.findViewById(R.id.srl_news_detail);
         srl_news_detail.setVisibility(View.VISIBLE);
         srl_news_detail.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srl_news_detail.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -237,8 +245,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
                 mPresenter.loadRefreshData(getUrl(mHint), mHint);
             }
         });
-        // 获取recyclerview
-        RecyclerView rv_news_detail = (RecyclerView) view.findViewById(R.id.rv_news_detail);
+
         // 显示
         rv_news_detail.setVisibility(View.VISIBLE);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);

@@ -30,6 +30,8 @@ import com.wcc.swen.utils.Url;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 /**
@@ -45,12 +47,37 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
     private List<VideoWrapper.VideoModel> vmList = new ArrayList<>();
     private VideoDetailPresenter mPresenter;
     private VideoDetailAdapter adapter;
-    private Button btn_video_retry;
-    private ProgressBar pb;
+    @BindView(R.id.btn_vedio_retry)
+    Button btn_video_retry;
+    @BindView(R.id.pb_fragment_video_detail)
+    ProgressBar pb;
     private View view;
     // 请求数据起始标识
     private int page = 0;
-    private SwipeRefreshLayout srl_video_detail;
+    @BindView(R.id.srl_video_detail)
+    SwipeRefreshLayout srl_video_detail;
+    @BindView(R.id.rv_video_detail)
+    RecyclerView rv_video_detail;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mHint = getArguments().getString("hint");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_video_detail, container, false);
+        ButterKnife.bind(this, view);
+
+        // 创建presenter
+        mPresenter = new VideoDetailPresenter(this);
+        mPresenter.loadData(getUrl(mHint), mHint);
+
+        return view;
+    }
+
     public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -119,27 +146,6 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mHint = getArguments().getString("hint");
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_video_detail, container, false);
-        pb = (ProgressBar) view.findViewById(R.id.pb_fragment_video_detail);
-        btn_video_retry = (Button) view.findViewById(R.id.btn_vedio_retry);
-
-
-        // 创建presenter
-        mPresenter = new VideoDetailPresenter(this);
-        mPresenter.loadData(getUrl(mHint), mHint);
-
-        return view;
-    }
-
-    @Override
     public void retry() {
         // 隐藏进度条
         pb.setVisibility(View.GONE);
@@ -166,8 +172,6 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
         // 隐藏ProgressBar
         pb.setVisibility(View.GONE);
 
-        // 获取SwipeRefreshLayout
-        srl_video_detail = (SwipeRefreshLayout) view.findViewById(R.id.srl_video_detail);
         srl_video_detail.setVisibility(View.VISIBLE);
         srl_video_detail.setProgressBackgroundColorSchemeResource(android.R.color.white);
         srl_video_detail.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -183,8 +187,6 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
                 mPresenter.loadRefreshData(getUrl(mHint), mHint);
             }
         });
-        // 获取recyclerview
-        RecyclerView rv_video_detail = (RecyclerView) view.findViewById(R.id.rv_video_detail);
         // 显示
         rv_video_detail.setVisibility(View.VISIBLE);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);

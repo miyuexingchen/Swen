@@ -25,14 +25,22 @@ import com.wcc.swen.view.WeatherFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private DrawerLayout mDrawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
     private List<ItemModelOfDrawerList> items = new ArrayList<>();
     private int currentFragmentId = 0;
     // 用于关闭Drawer
-    private LinearLayout ll_drawer;
+    @BindView(R.id.ll_drawer)
+    LinearLayout ll_drawer;
+    @BindView(R.id.lv_drawer)
+    ListView lv_drawer;
     private FragmentManager fragmentManager;
     private long firstPressTime = 0;
     private Fragment currentFragment;
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         // 初始化view
         initView(savedInstanceState);
@@ -82,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // 这句话保证title能被修改
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -95,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView lv_drawer = (ListView) findViewById(R.id.lv_drawer);
-
         items.add(new ItemModelOfDrawerList(R.mipmap.news_icon, "新闻"));
         items.add(new ItemModelOfDrawerList(R.mipmap.video_icon, "视频"));
         items.add(new ItemModelOfDrawerList(R.mipmap.weather_icon, "天气"));
@@ -105,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         DrawerListAdapter mAdapter = new DrawerListAdapter(this, items);
         lv_drawer.setAdapter(mAdapter);
 
-        ll_drawer = (LinearLayout) findViewById(R.id.ll_drawer);
         lv_drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

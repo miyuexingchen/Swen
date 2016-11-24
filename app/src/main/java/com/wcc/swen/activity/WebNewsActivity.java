@@ -12,14 +12,19 @@ import android.webkit.WebViewClient;
 
 import com.wcc.swen.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class WebNewsActivity extends AppCompatActivity {
 
-    private WebView wv_web_news;
+    @BindView(R.id.wv_web_news)
+    WebView wv_web_news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_news);
+        ButterKnife.bind(this);
 
         initView();
     }
@@ -48,7 +53,6 @@ public class WebNewsActivity extends AppCompatActivity {
         });
 
         String url = getIntent().getStringExtra("url");
-        wv_web_news = (WebView) findViewById(R.id.wv_web_news);
 
         wv_web_news.getSettings().setDomStorageEnabled(true);
         wv_web_news.getSettings().setJavaScriptEnabled(true);

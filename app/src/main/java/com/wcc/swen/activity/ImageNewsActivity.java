@@ -21,6 +21,9 @@ import com.wcc.swen.utils.Url;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by WangChenchen on 2016/8/23.
  */
@@ -30,18 +33,28 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     private String url;
     private String title;
     private List<Photo> list;
-    private TextView tv_title_image_news;
-    private TextView tv_page_image_news;
-    private TextView tv_image_news;
-    private ViewPager vp_image_news;
-    private ProgressBar pb_image_news;
-    private Button btn_image_news;
+    @BindView(R.id.tv_title_image_news)
+    TextView tv_title_image_news;
+    @BindView(R.id.tv_page_image_news)
+    TextView tv_page_image_news;
+    @BindView(R.id.tv_image_news)
+    TextView tv_image_news;
+    @BindView(R.id.vp_image_news)
+    ViewPager vp_image_news;
+    @BindView(R.id.pb_image_news)
+    ProgressBar pb_image_news;
+    @BindView(R.id.btn_hint_retry)
+    Button btn_image_news;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_image_news);
+        ButterKnife.bind(this);
+
+
         initView();
 
         title = getIntent().getStringExtra("title");
@@ -64,8 +77,6 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
             getWindow().setStatusBarColor(Color.BLACK);   //这里动态修改颜色
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Color.BLACK);
         // 这句话保证title能被修改
@@ -81,14 +92,6 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
                 finish();
             }
         });
-
-        vp_image_news = (ViewPager) findViewById(R.id.vp_image_news);
-        tv_title_image_news = (TextView) findViewById(R.id.tv_title_image_news);
-        tv_page_image_news = (TextView) findViewById(R.id.tv_page_image_news);
-        tv_image_news = (TextView) findViewById(R.id.tv_image_news);
-
-        pb_image_news = (ProgressBar) findViewById(R.id.pb_image_news);
-        btn_image_news = (Button) findViewById(R.id.btn_hint_retry);
     }
 
     @Override

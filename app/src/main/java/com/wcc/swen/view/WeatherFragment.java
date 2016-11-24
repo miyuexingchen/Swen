@@ -21,6 +21,9 @@ import com.wcc.swen.presenter.WeatherPresenter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2016/8/17.
  */
@@ -28,19 +31,21 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
 
     private static final String url = "https://api.thinkpage.cn/v3/weather/daily.json?key=wwl9dtjoxf2ydspl&location=nanjing&language=zh-Hans&unit=c&start=0&days=5";
     private WeatherWrapper mWrapper;
-    private TextView wd;
-    private TextView tq;
-    private TextView fxfs;
-    private RecyclerView rv_tq;
+
+    @BindView(R.id.tv_today_wd)
+    TextView wd;
+    @BindView(R.id.tv_today_tq)
+    TextView tq;
+    @BindView(R.id.tv_fxfs)
+    TextView fxfs;
+    @BindView(R.id.rv_tq)
+    RecyclerView rv_tq;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        wd = (TextView) view.findViewById(R.id.tv_today_wd);
-        tq = (TextView) view.findViewById(R.id.tv_today_tq);
-        fxfs = (TextView) view.findViewById(R.id.tv_fxfs);
-        rv_tq = (RecyclerView) view.findViewById(R.id.rv_tq);
+        ButterKnife.bind(this, view);
 
         WeatherPresenter mPresenter = new WeatherPresenter(this);
         mPresenter.loadData(url);

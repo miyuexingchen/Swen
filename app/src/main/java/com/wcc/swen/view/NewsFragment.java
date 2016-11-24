@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2016/8/17.
  */
@@ -37,9 +40,13 @@ public class NewsFragment extends Fragment {
             , "教育", "论坛", "旅游", "手机"
             , "博客", "社会", "家居", "暴雪游戏"
             , "亲子", "CBA", "消息", "军事"};
-    private View btn_tab_select;
-    private TabLayout tab;
-    private ViewPager vp;
+
+    @BindView(R.id.btn_tab_select)
+    View btn_tab_select;
+    @BindView(R.id.tab)
+    TabLayout tab;
+    @BindView(R.id.vp_news_main)
+    ViewPager vp;
     private PopupWindow pop;
     private boolean isPopupWindowShowing = false;
     private List<String> myChannels;
@@ -51,8 +58,8 @@ public class NewsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_news, container, false);
+        ButterKnife.bind(this, view);
 
         SharedPreferences sp = getActivity().getSharedPreferences("tabs", Context.MODE_PRIVATE);
         String tabString = sp.getString("tabs", tabsToString());
@@ -65,8 +72,6 @@ public class NewsFragment extends Fragment {
         alterChannels = (others == null ? new ArrayList<>() : Arrays.asList(others));
 
         // 实现tab效果
-        tab = (TabLayout) view.findViewById(R.id.tab);
-        vp = (ViewPager) view.findViewById(R.id.vp_news_main);
         vpAdapter = new NewsAdapter(getChildFragmentManager(), myChannels);
         vp.setAdapter(vpAdapter);
         vp.setOffscreenPageLimit(1);
@@ -76,7 +81,6 @@ public class NewsFragment extends Fragment {
         else
             tab.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        btn_tab_select = view.findViewById(R.id.btn_tab_select);
         btn_tab_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
