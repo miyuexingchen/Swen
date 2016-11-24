@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private long firstPressTime = 0;
     private Fragment currentFragment;
-    private Fragment videoFragment;
-    private Fragment weatherFragment;
 
 
     @Override
@@ -58,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         /**
          * 防止碎片重叠
          */
+        Fragment videoFragment;
+        Fragment weatherFragment;
         if(savedInstanceState != null)
         {
             currentFragment = fragmentManager.findFragmentByTag("news");
@@ -148,8 +148,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (currentFragmentId == 0 && ((NewsFragment) currentFragment).getIsPopupWindowShowing()) {
-            ((NewsFragment) currentFragment).onBackPressed();
+        if (currentFragmentId == 0) {
+            NewsFragment news = (NewsFragment) fragmentManager.findFragmentByTag("news");
+            if(news.getIsPopupWindowShowing())
+                news.onBackPressed();
             return;
         }
 

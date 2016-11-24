@@ -48,27 +48,6 @@ public class NewsFragment extends Fragment {
     private NewsAdapter vpAdapter;
     private RecyclerView rv_pop;
 
-    private String listToString(List<String> list) {
-        String str = "";
-        for (String s : list)
-            str += s + "-";
-        return str;
-    }
-
-    private String tabsToString() {
-        String s = "";
-        for (String str : tabs)
-            s += str + "-";
-        return s;
-    }
-
-    private String[] stringToTabs(String tabString) {
-        if (!tabString.equals(""))
-            return tabString.split("-");
-        else
-            return null;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,15 +60,9 @@ public class NewsFragment extends Fragment {
         String ohterString = sp.getString("others", "");
         String[] others = stringToTabs(ohterString);
 
-        if (tabs == null)
-            myChannels = new ArrayList<>();
-        else
-            myChannels = Arrays.asList(tabs);
+        myChannels = (tabs == null ? new ArrayList<>() : Arrays.asList(tabs));
 
-        if (others == null)
-            alterChannels = new ArrayList<>();
-        else
-            alterChannels = Arrays.asList(others);
+        alterChannels = (others == null ? new ArrayList<>() : Arrays.asList(others));
 
         // 实现tab效果
         tab = (TabLayout) view.findViewById(R.id.tab);
@@ -193,6 +166,27 @@ public class NewsFragment extends Fragment {
         vpAdapter.notifyDataSetChanged();
         pop.dismiss();
         isPopupWindowShowing = false;
+    }
+
+    private String listToString(List<String> list) {
+        String str = "";
+        for (String s : list)
+            str += s + "-";
+        return str;
+    }
+
+    private String tabsToString() {
+        String s = "";
+        for (String str : tabs)
+            s += str + "-";
+        return s;
+    }
+
+    private String[] stringToTabs(String tabString) {
+        if (!tabString.equals(""))
+            return tabString.split("-");
+        else
+            return null;
     }
 }
 
