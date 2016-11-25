@@ -1,4 +1,4 @@
-package com.wcc.swen.Net;
+package com.wcc.swen.net;
 
 import com.wcc.swen.model.WeatherWrapper;
 

@@ -8,9 +8,7 @@ import com.wcc.swen.model.WeatherWrapper;
 public interface WeatherContract {
 
     interface View {
-        void setWrapper(WeatherWrapper wrapper);
-
-        void refreshUI();
+        void refreshUI(WeatherWrapper weatherWrapper);
     }
 
     interface Presenter {

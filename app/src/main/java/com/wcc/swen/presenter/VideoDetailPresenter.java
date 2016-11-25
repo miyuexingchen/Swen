@@ -4,10 +4,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.text.TextUtilsCompat;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.wcc.swen.contract.NewsDetailContract;
 import com.wcc.swen.model.VideoWrapper;
+import com.wcc.swen.utils.LogUtils;
 import com.wcc.swen.utils.NetUtils;
 import com.wcc.swen.utils.OkHttpUtils;
 import com.wcc.swen.utils.ToastUtils;
@@ -91,6 +94,8 @@ public class VideoDetailPresenter implements NewsDetailContract.Presenter {
                 break;
             case "娱乐":
                 VideoWrapper.EntertainWrapper ew = gson.fromJson(str, VideoWrapper.EntertainWrapper.class);
+                LogUtils.e("System.out", "++++ ew == null"+(ew==null));
+                LogUtils.e("System.out", "++++ str "+(TextUtils.isEmpty(str)));
                 list = ew.V9LG4CHOR;
                 break;
             case "搞笑":

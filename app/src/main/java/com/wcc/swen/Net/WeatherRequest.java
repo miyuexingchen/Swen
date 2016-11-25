@@ -1,4 +1,4 @@
-package com.wcc.swen.Net;
+package com.wcc.swen.net;
 
 import com.wcc.swen.model.WeatherWrapper;
 import com.wcc.swen.utils.Url;
@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
  * Created by WangChenchen on 2016/11/25.
  */
 
-public class HttpRequest {
+public class WeatherRequest {
 
     private static final int DEFAULT_TIMEOUT = 5;
 
@@ -30,7 +30,7 @@ public class HttpRequest {
 
     private Observable.Transformer<WeatherWrapper, WeatherWrapper> schedulersTransformer;
 
-    private HttpRequest(){
+    private WeatherRequest(){
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
@@ -54,10 +54,10 @@ public class HttpRequest {
     }
 
     public static class SingletonHolder{
-        private static final HttpRequest instance = new HttpRequest(); 
+        private static final WeatherRequest instance = new WeatherRequest();
     }
     
-    public static HttpRequest getInstance()
+    public static WeatherRequest getInstance()
     {
         return SingletonHolder.instance;
     }
@@ -65,8 +65,6 @@ public class HttpRequest {
     public void getWeather(Subscriber<WeatherWrapper> subscriber)
     {
         Map<String, String> map = new HashMap<>();
-//        ?key=wwl9dtjoxf2ydspl&location=nanjing&language=zh-Hans&unit=c&start=0&days=5
-
         map.put("key", "wwl9dtjoxf2ydspl");
         map.put("location", "beijing");
         map.put("language", "zh-Hans");

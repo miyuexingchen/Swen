@@ -19,6 +19,7 @@ import com.wcc.swen.model.Weather;
 import com.wcc.swen.model.WeatherWrapper;
 import com.wcc.swen.presenter.WeatherPresenter;
 
+import java.sql.Wrapper;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,8 +29,6 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/8/17.
  */
 public class WeatherFragment extends Fragment implements WeatherContract.View {
-
-    private WeatherWrapper mWrapper;
 
     @BindView(R.id.tv_today_wd)
     TextView wd;
@@ -53,14 +52,9 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
     }
 
     @Override
-    public void setWrapper(WeatherWrapper wrapper) {
-        mWrapper = wrapper;
-    }
-
-    @Override
-    public void refreshUI() {
-        if (mWrapper != null) {
-            List<Weather> results = mWrapper.results;
+    public void refreshUI(WeatherWrapper weatherWrapper) {
+        if (weatherWrapper != null) {
+            List<Weather> results = weatherWrapper.results;
             List<Daily> daily = results.get(0).daily;
             Daily d = daily.get(0);
 

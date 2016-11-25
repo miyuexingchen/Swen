@@ -1,7 +1,7 @@
 package com.wcc.swen.presenter;
 
 import android.support.v4.app.Fragment;
-import com.wcc.swen.Net.HttpRequest;
+import com.wcc.swen.net.WeatherRequest;
 import com.wcc.swen.contract.WeatherContract;
 import com.wcc.swen.model.WeatherWrapper;
 import com.wcc.swen.utils.NetUtils;
@@ -26,7 +26,7 @@ public class WeatherPresenter implements WeatherContract.Presenter {
     @Override
     public void loadData() {
 
-        HttpRequest.getInstance().getWeather(new Subscriber<WeatherWrapper>() {
+        WeatherRequest.getInstance().getWeather(new Subscriber<WeatherWrapper>() {
 
             private void unSubscribe()
             {
@@ -58,10 +58,9 @@ public class WeatherPresenter implements WeatherContract.Presenter {
             }
 
             @Override
-            public void onNext(WeatherWrapper weather) {
-                if (weather != null) {
-                    mView.setWrapper(weather);
-                    mView.refreshUI();
+            public void onNext(WeatherWrapper weatherWrapper) {
+                if (weatherWrapper != null) {
+                    mView.refreshUI(weatherWrapper);
                 }
                 System.out.println("weather onNext " + Thread.currentThread().getName());
             }
