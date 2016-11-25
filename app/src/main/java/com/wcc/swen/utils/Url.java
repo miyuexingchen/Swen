@@ -108,4 +108,7 @@ public class Url {
     public static final String VIDEO_FUN_ID = "V9LG4E6VR";
     // 精品视频
     public static final String VIDEO_CHOICE_ID = "00850FRB";
+
+    public static final String weatherUrl = "https://api.thinkpage.cn/";
+
 }

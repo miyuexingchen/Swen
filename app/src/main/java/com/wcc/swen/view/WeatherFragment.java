@@ -29,7 +29,6 @@ import butterknife.ButterKnife;
  */
 public class WeatherFragment extends Fragment implements WeatherContract.View {
 
-    private static final String url = "https://api.thinkpage.cn/v3/weather/daily.json?key=wwl9dtjoxf2ydspl&location=nanjing&language=zh-Hans&unit=c&start=0&days=5";
     private WeatherWrapper mWrapper;
 
     @BindView(R.id.tv_today_wd)
@@ -48,14 +47,14 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
         ButterKnife.bind(this, view);
 
         WeatherPresenter mPresenter = new WeatherPresenter(this);
-        mPresenter.loadData(url);
+        mPresenter.loadData();
 
         return view;
     }
 
     @Override
-    public void setWrapper(Object wrapper) {
-        mWrapper = (WeatherWrapper) wrapper;
+    public void setWrapper(WeatherWrapper wrapper) {
+        mWrapper = wrapper;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
             wd.setText(d.high + "°");
             tq.setText("北京|" + d.text_day);
             if (d.wind_direction.equals("无持续风向"))
-                fxfs.setText(d.wind_scale + "级");
+                fxfs.setText("风速" + d.wind_scale + "级");
             else
                 fxfs.setText(d.wind_direction + "风" + d.wind_scale + "级");
 
