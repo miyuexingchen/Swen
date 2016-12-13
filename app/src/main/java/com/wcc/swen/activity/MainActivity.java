@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.wcc.swen.R;
 import com.wcc.swen.adapter.DrawerListAdapter;
 import com.wcc.swen.model.ItemModelOfDrawerList;
+import com.wcc.swen.view.AppleFragment;
 import com.wcc.swen.view.NewsFragment;
 import com.wcc.swen.view.VideoFragment;
 import com.wcc.swen.view.WeatherFragment;
@@ -67,25 +68,31 @@ public class MainActivity extends AppCompatActivity {
          */
         Fragment videoFragment;
         Fragment weatherFragment;
+        Fragment newsFragment;
         if(savedInstanceState != null)
         {
-            currentFragment = fragmentManager.findFragmentByTag("news");
+            currentFragment = fragmentManager.findFragmentByTag("apple");
+            newsFragment = fragmentManager.findFragmentByTag("news");
             videoFragment = fragmentManager.findFragmentByTag("video");
             weatherFragment = fragmentManager.findFragmentByTag("weather");
             fragmentManager.beginTransaction().show(currentFragment)
+                    .hide(newsFragment)
                     .hide(videoFragment)
                     .hide(weatherFragment)
                     .commit();
 
         }else
         {
-            currentFragment = new NewsFragment();
+            currentFragment = new AppleFragment();
+            newsFragment = new NewsFragment();
             videoFragment = new VideoFragment();
             weatherFragment = new WeatherFragment();
-            fragmentManager.beginTransaction().add(R.id.ll_content, currentFragment, "news")
+            fragmentManager.beginTransaction().add(R.id.ll_content, currentFragment, "apple")
                     .add(R.id.ll_content, videoFragment, "video")
                     .add(R.id.ll_content, weatherFragment, "weather")
+                    .add(R.id.ll_content, newsFragment, "news")
                     .show(currentFragment)
+                    .hide(newsFragment)
                     .hide(videoFragment)
                     .hide(weatherFragment)
                     .commit();
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         // 这句话保证title能被修改
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("新闻资讯");
+        toolbar.setTitle("苹果");
 
         // 这两句显示左边的三条杠，如果要变为白色在toolbar的布局文件里添加这两句：
         // android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        items.add(new ItemModelOfDrawerList(R.mipmap.apple, "苹果"));
         items.add(new ItemModelOfDrawerList(R.mipmap.news_icon, "新闻"));
         items.add(new ItemModelOfDrawerList(R.mipmap.video_icon, "视频"));
         items.add(new ItemModelOfDrawerList(R.mipmap.weather_icon, "天气"));
@@ -134,14 +142,18 @@ public class MainActivity extends AppCompatActivity {
         switch (fragmentId)
         {
             case 0:
+                toFragment = fragmentManager.findFragmentByTag("apple");
+                toolbar.setTitle("苹果");
+                break;
+            case 1:
                 toFragment = fragmentManager.findFragmentByTag("news");
                 toolbar.setTitle("新闻资讯");
                 break;
-            case 1:
+            case 2:
                 toFragment = fragmentManager.findFragmentByTag("video");
                 toolbar.setTitle("视频");
                 break;
-            case 2:
+            case 3:
                 toFragment = fragmentManager.findFragmentByTag("weather");
                 toolbar.setTitle("天气");
                 break;

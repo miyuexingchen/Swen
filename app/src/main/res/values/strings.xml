@@ -14,4 +14,7 @@
     <string name="clicktoretry">点击重试</string>
     <string name="pushtorefresh">上拉刷新...</string>
     <string name="switchchannel">切换栏目</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="apple">逆向思维</string>
 </resources>
