@@ -24,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by WangChenchen on 2016/8/23.
@@ -49,11 +50,13 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_news);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
 
         initView();
@@ -68,6 +71,12 @@ public class ImageNewsActivity extends AppCompatActivity implements NewsDetailCo
         mPresenter = new ImageNewsPresenter(this);
 
         mPresenter.loadData(url, "");
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 
     private void initView() {

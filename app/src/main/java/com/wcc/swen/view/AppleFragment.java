@@ -14,6 +14,7 @@ import com.wcc.swen.presenter.ApplePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,11 +26,13 @@ public class AppleFragment extends Fragment {
 
     private AppleContract.Presenter mPresenter;
 
+    private Unbinder unbinder;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_apple, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mPresenter = new ApplePresenter();
         mPresenter.dailyApple(getActivity(), tv_apple_fragment);
@@ -37,4 +40,9 @@ public class AppleFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
 }

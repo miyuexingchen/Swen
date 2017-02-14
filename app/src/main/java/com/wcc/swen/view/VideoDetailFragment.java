@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 
 /**
@@ -65,17 +66,25 @@ public class VideoDetailFragment extends Fragment implements NewsDetailContract.
         mHint = getArguments().getString("hint");
     }
 
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_video_detail, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         // 创建presenter
         mPresenter = new VideoDetailPresenter(this);
         mPresenter.loadData(getUrl(mHint), mHint);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     public Handler mHandler = new Handler() {

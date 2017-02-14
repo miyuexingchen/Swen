@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/8/17.
@@ -55,11 +56,13 @@ public class NewsFragment extends Fragment {
     private NewsAdapter vpAdapter;
     private RecyclerView rv_pop;
 
+
+    private Unbinder unbinder;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         SharedPreferences sp = getActivity().getSharedPreferences("tabs", Context.MODE_PRIVATE);
         String tabString = sp.getString("tabs", tabsToString());
@@ -137,6 +140,12 @@ public class NewsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     public boolean getIsPopupWindowShowing() {

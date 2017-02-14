@@ -14,19 +14,28 @@ import com.wcc.swen.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class WebNewsActivity extends AppCompatActivity {
 
     @BindView(R.id.wv_web_news)
     WebView wv_web_news;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_news);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 
     private void initView() {

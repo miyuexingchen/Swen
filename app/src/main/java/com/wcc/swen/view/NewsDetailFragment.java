@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by WangChenchen on 2016/8/18.
@@ -73,11 +74,13 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         mHint = getArguments().getString("hint");
     }
 
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_detail, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
 
         // 创建presenter
@@ -85,6 +88,12 @@ public class NewsDetailFragment extends Fragment implements NewsDetailAdapter.On
         mPresenter.loadData(getUrl(mHint), mHint);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     public Handler mHandler = new Handler() {

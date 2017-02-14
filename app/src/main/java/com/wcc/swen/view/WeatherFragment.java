@@ -24,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/8/17.
@@ -39,16 +40,24 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
     @BindView(R.id.rv_tq)
     RecyclerView rv_tq;
 
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         WeatherPresenter mPresenter = new WeatherPresenter(this);
         mPresenter.loadData();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
