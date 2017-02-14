@@ -8,8 +8,6 @@ import android.widget.TextView;
 import com.wcc.swen.contract.AppleContract;
 
 import java.text.SimpleDateFormat;
-import java.util.Random;
-
 /**
  * Created by WangChenchen on 2016/12/13.
  */
@@ -36,14 +34,14 @@ public class ApplePresenter implements AppleContract.Presenter {
             tv_apple_fragment.setText(sp.getString("apple", "error"));
         }else
         {
-            System.out.println(thoughts.length);
-
-
-//            Random r = new Random(thoughts.length);
-//            int index = r.nextInt();
             int index = (int) (Math.random() * thoughts.length);
-            System.out.println(index);
             String thought = thoughts[index];
+            String yesterdayThought = sp.getString("apple", "error");
+            while(thought.equals(yesterdayThought)) {
+                index = (int) (Math.random() * thoughts.length);
+                thought = thoughts[index];
+            }
+
             tv_apple_fragment.setText(thought);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("apple", thought);
